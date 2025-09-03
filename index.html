@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>DATASTREAM // VENUE: Horizon & More</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tone/14.7.77/Tone.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
     <style>
         :root {
@@ -117,6 +118,19 @@
             opacity: 1;
             transform: translateY(0);
         }
+
+        /* Modal Styles */
+        .modal-overlay {
+            position: fixed; inset: 0; background-color: rgba(2, 0, 26, 0.8);
+            backdrop-filter: blur(5px); z-index: 100;
+            display: flex; align-items: center; justify-content: center;
+            opacity: 0; pointer-events: none; transition: opacity 0.3s ease;
+        }
+        .modal-overlay.active { opacity: 1; pointer-events: auto; }
+        .modal-content {
+             transform: scale(0.95); transition: transform 0.3s ease;
+        }
+        .modal-overlay.active .modal-content { transform: scale(1); }
     </style>
 </head>
 <body class="w-full">
@@ -154,7 +168,7 @@
                 <!-- Venue Header -->
                 <div class="mb-8 fade-in-section">
                     <h1 class="relative font-orbitron text-5xl md:text-6xl font-extrabold text-white text-glow-cyan glitch">Horizon & More</h1>
-                    <p class="text-lg text-cyan-200/50 mt-2">// 2818 NE Interstate 410, San Antonio, TX 78217</p>
+                    <p class="text-lg text-cyan-200/50 mt-2">// 2818 NE Interstate 410 Loop, San Antonio, TX 78217</p>
                 </div>
                 
                 <!-- Hero Image -->
@@ -186,9 +200,9 @@
                                         <p class="font-orbitron text-4xl text-glow-magenta animate-pulse">TRANSMISSION LIVE</p>
                                     </div>
 
-                                    <p class="mb-4">An evening dedicated to style, games, and high-class leisure. Prizes for best dressed, games, and cigars on the patio.</p>
+                                    <p class="mb-4">An evening dedicated to style, games, and high-class leisure.</p>
                                     <div class="flex items-center text-sm space-x-4 mb-4">
-                                        <span><span class="font-bold">//</span> 11:00 AM - 3:00 PM</span>
+                                        <span><span class="font-bold">//</span> 8:00 PM - 2:00 AM</span>
                                         <span class="text-cyan-800">&bull;</span>
                                         <span class="font-bold text-glow-magenta">ACCESS: COMPLIMENTARY</span>
                                     </div>
@@ -205,6 +219,17 @@
                                             </ul>
                                         </div>
                                     </div>
+                                    
+                                    <hr class="border-cyan-500/10 my-8">
+                                    
+                                    <!-- Event Intel Section -->
+                                    <h3 class="font-orbitron text-xl font-bold text-white mb-4 text-glow-cyan">// Event Intel</h3>
+                                    <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
+                                        <button class="intel-button glass-panel p-4 rounded-lg text-center hover:border-magenta-500/50" data-modal="prize-modal">🏆<span class="block text-sm mt-2">Prize Protocol</span></button>
+                                        <button class="intel-button glass-panel p-4 rounded-lg text-center hover:border-magenta-500/50" data-modal="games-modal">🎲<span class="block text-sm mt-2">Game Matrix</span></button>
+                                        <button class="intel-button glass-panel p-4 rounded-lg text-center hover:border-magenta-500/50" data-modal="lounge-modal">💨<span class="block text-sm mt-2">Lounge Access</span></button>
+                                    </div>
+
                                 </div>
                             </div>
                         </div>
@@ -212,14 +237,25 @@
                         <!-- Divider -->
                         <hr class="border-cyan-500/10">
 
-                        <!-- Future Event Placeholder -->
-                         <div class="event-card p-4 -m-4 rounded-lg opacity-50">
-                            <div class="flex flex-col md:flex-row items-center gap-6">
-                                <div class="w-full">
-                                    <h3 class="font-bold text-3xl text-white">Project: Chimera</h3>
-                                    <p class="text-gray-500 mb-4">Transmission Source: [REDACTED]</p>
-                                    <p class="text-gray-400 font-mono text-sm">[STATUS: ENCRYPTED]...<br>// Signal decryption scheduled for future date.</p>
-                                    <p class="font-orbitron text-2xl text-cyan-300/50 mt-4">DATE: OCTOBER 2025</p>
+                        <!-- Enhanced Future Event Placeholder -->
+                         <div class="p-4 -m-4 rounded-lg opacity-60">
+                            <div class="relative border-2 border-cyan-500/20 p-6 rounded-lg">
+                                <!-- Corner brackets for style -->
+                                <div class="absolute top-1 left-1 w-4 h-4 border-t-2 border-l-2 border-cyan-500/50"></div>
+                                <div class="absolute top-1 right-1 w-4 h-4 border-t-2 border-r-2 border-cyan-500/50"></div>
+                                <div class="absolute bottom-1 left-1 w-4 h-4 border-b-2 border-l-2 border-cyan-500/50"></div>
+                                <div class="absolute bottom-1 right-1 w-4 h-4 border-b-2 border-r-2 border-cyan-500/50"></div>
+                                
+                                <div class="flex flex-col md:flex-row items-center gap-6">
+                                    <div class="text-cyan-500/50">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" /></svg>
+                                    </div>
+                                    <div class="w-full">
+                                        <h3 class="font-bold text-3xl text-white">Project: Chimera</h3>
+                                        <p class="text-gray-500 mb-4">Transmission Source: [REDACTED]</p>
+                                        <p class="text-cyan-300 font-mono text-sm h-10 data-scramble">[STATUS: ENCRYPTED]...</p>
+                                        <p class="font-orbitron text-2xl text-cyan-300/50 mt-4">DATE: OCTOBER 2025</p>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -249,15 +285,15 @@
             <!-- Right Column: Sidebar -->
             <aside class="w-full lg:w-1/3 fade-in-section">
                 <div class="glass-panel rounded-lg shadow-xl p-6 sticky top-28">
-                     <button class="btn-primary w-full mb-6 animate-pulse">
-                        Follow Signal
+                     <button id="rsvp-button" class="btn-primary w-full mb-6">
+                        RSVP / Confirm Signal
                      </button>
 
                      <h2 class="font-orbitron text-xl font-bold text-white pb-4 text-glow-cyan">System Status</h2>
                      <div class="space-y-3 text-sm font-mono text-cyan-300">
                         <div class="flex justify-between items-center"><span>Network</span><span class="text-green-400">Online</span></div>
                         <div class="flex justify-between items-center"><span>Datastream</span><span class="text-green-400">Stable</span></div>
-                        <div class="flex justify-between items-center"><span>Signal Strength</span><div class="w-1/2 h-2 bg-cyan-900 rounded-full overflow-hidden"><div class="h-full bg-cyan-400 w-11/12"></div></div></div>
+                        <div class="flex justify-between items-center"><span>Confirmed Signals</span><span id="guest-count" class="text-green-400">137</span></div>
                      </div>
                      
                      <hr class="border-cyan-500/20 my-6">
@@ -273,15 +309,98 @@
         </div>
     </div>
 
+    <!-- Modals -->
+    <!-- RSVP Modal -->
+    <div id="rsvp-modal" class="modal-overlay">
+        <div class="modal-content glass-panel rounded-lg shadow-xl p-8 w-full max-w-md m-4">
+            <h2 class="font-orbitron text-2xl text-white text-glow-cyan mb-4">Confirm Signal</h2>
+            <p class="text-gray-400 mb-6">Register your alias to confirm your attendance at the Player's Ball.</p>
+            <form id="rsvp-form">
+                <input type="text" id="alias-input" placeholder="Enter Alias..." class="w-full bg-cyan-900/20 border border-cyan-500/30 rounded-md px-4 py-2 text-white placeholder-gray-500 focus:ring-2 focus:ring-cyan-400 focus:outline-none">
+                <div class="mt-6 flex justify-end gap-4">
+                    <button type="button" class="close-modal-button text-gray-400 hover:text-white">Cancel</button>
+                    <button type="submit" class="btn-primary">Confirm</button>
+                </div>
+            </form>
+            <div id="rsvp-success" class="hidden text-center">
+                <h3 class="font-orbitron text-2xl text-green-400">Signal Confirmed!</h3>
+                <p class="text-gray-400 mt-2">Your attendance has been logged. We'll see you there.</p>
+                <button type="button" class="close-modal-button mt-6 btn-primary">Close</button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Intel Modals -->
+    <div id="prize-modal" class="modal-overlay">
+         <div class="modal-content glass-panel rounded-lg shadow-xl p-8 w-full max-w-md m-4 text-center">
+            <h2 class="font-orbitron text-2xl text-white text-glow-magenta mb-4">Prize Protocol</h2>
+            <p class="text-gray-300">Showcase your finest attire. A grand prize and eternal bragging rights await the most stylish player of the evening. The winner will be judged by a panel of anonymous connoisseurs.</p>
+            <button class="close-modal-button mt-6 btn-primary">Close</button>
+        </div>
+    </div>
+    <div id="games-modal" class="modal-overlay">
+         <div class="modal-content glass-panel rounded-lg shadow-xl p-8 w-full max-w-md m-4 text-center">
+            <h2 class="font-orbitron text-2xl text-white text-glow-magenta mb-4">Game Matrix</h2>
+            <p class="text-gray-300">Engage in high-stakes, high-reward transmissions. Join the lively game of "Bih Better Have My Money," or test your strategy in classic games of Spades & Dominoes. Only the sharpest minds will prevail.</p>
+            <button class="close-modal-button mt-6 btn-primary">Close</button>
+        </div>
+    </div>
+     <div id="lounge-modal" class="modal-overlay">
+         <div class="modal-content glass-panel rounded-lg shadow-xl p-8 w-full max-w-md m-4 text-center">
+            <h2 class="font-orbitron text-2xl text-white text-glow-magenta mb-4">Lounge Access</h2>
+            <p class="text-gray-300">Retreat to the designated patio sector. Enjoy a selection of fine cigars and network with fellow players in a relaxed, sophisticated atmosphere away from the main floor.</p>
+            <button class="close-modal-button mt-6 btn-primary">Close</button>
+        </div>
+    </div>
+
+
     <!-- Footer -->
     <footer class="header-bg border-t border-cyan-500/20 mt-12">
-        <div class="container mx-auto px-6 py-6 text-center text-cyan-200/50 text-sm">
-            <p>DATASTREAM END // &copy; 2025 The Dungeon Presents. All Rights Reserved.</p>
+        <div class="container mx-auto px-6 py-4 text-center text-cyan-200/50 text-sm flex justify-between items-center">
+            <p>&copy; 2025 The Dungeon Presents. All Rights Reserved.</p>
+            <button id="mute-button" class="text-cyan-200/50 hover:text-white">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path d="M5.5 3.5A1.5 1.5 0 017 5v1.586l-1.5-1.5V5a.5.5 0 011 0v.586l-2-2V5a1.5 1.5 0 011.5-1.5zM12.5 5A1.5 1.5 0 0114 6.5v4.086l-1-1V6.5a.5.5 0 011 0v3.086l-1-1V6.5a.5.5 0 011 0v.086l-1-1V6.5a.5.5 0 01.5-.5H13a.5.5 0 010 1h-.5v.086l-1-1V6.5a.5.5 0 01.5-.5H13a.5.5 0 010 1h-.5v1.086l-1-1V6.5a.5.5 0 01.5-.5h.5a.5.5 0 010 1h-.5v1.086l-1-1V6.5a.5.5 0 01.5-.5H13a.5.5 0 010 1h-.5v.086l-1-1V6.5A.5.5 0 0112 6v-.5a.5.5 0 01.5-.5z" /><path fill-rule="evenodd" d="M2.293 2.293a1 1 0 011.414 0l14 14a1 1 0 01-1.414 1.414l-14-14a1 1 0 010-1.414zM4 10.5a.5.5 0 01.5.5v3a.5.5 0 01-1 0v-3a.5.5 0 01.5-.5zm2.5-.5a.5.5 0 00-1 0v3a.5.5 0 001 0v-3zM8 10.5a.5.5 0 01.5.5v3a.5.5 0 01-1 0v-3A.5.5 0 018 10.5zm2.5-.5a.5.5 0 00-1 0v3a.5.5 0 001 0v-3z" clip-rule="evenodd" /></svg>
+            </button>
         </div>
     </footer>
 
     <script>
         document.addEventListener('DOMContentLoaded', () => {
+             // --- Audio Setup ---
+            let audioMuted = false;
+            let audioStarted = false;
+            const synth = new Tone.Synth({ oscillator: { type: "sine" }, envelope: { attack: 0.005, decay: 0.1, sustain: 0.3, release: 1 } }).toDestination();
+
+            const startAudioContext = async () => {
+                if (audioStarted) return;
+                await Tone.start();
+                audioStarted = true;
+                console.log('Audio context started');
+                window.removeEventListener('click', startAudioContext);
+                window.removeEventListener('keydown', startAudioContext);
+            };
+            window.addEventListener('click', startAudioContext, { once: true });
+            window.addEventListener('keydown', startAudioContext, { once: true });
+
+            const playSound = (note, duration) => { if (!audioMuted && audioStarted) synth.triggerAttackRelease(note, duration); };
+            
+            let hoverSoundTimeout;
+            document.querySelectorAll('a, button, .smooth-scroll, .intel-button').forEach(el => {
+                 el.addEventListener('mouseenter', () => {
+                    clearTimeout(hoverSoundTimeout);
+                    hoverSoundTimeout = setTimeout(() => playSound('C4', '8n'), 50);
+                });
+                el.addEventListener('click', () => playSound('G4', '8n'));
+            });
+            
+            const muteButton = document.getElementById('mute-button');
+            if(muteButton) {
+                muteButton.addEventListener('click', () => {
+                    audioMuted = !audioMuted;
+                    muteButton.classList.toggle('text-glow-magenta', audioMuted);
+                });
+            }
+
             // Smooth Scroll Logic
             document.querySelectorAll('a.smooth-scroll').forEach(anchor => {
                 anchor.addEventListener('click', function (e) {
@@ -316,7 +435,7 @@
             // Countdown Timer Logic
             const countdownElement = document.getElementById('countdown');
             const liveStatusElement = document.getElementById('live-status');
-            const eventDate = new Date('September 6, 2025 11:00:00').getTime();
+            const eventDate = new Date('September 13, 2025 20:00:00').getTime();
 
             const countdownInterval = setInterval(() => {
                 const now = new Date().getTime();
@@ -349,28 +468,19 @@
                 title: "Player’s Ball",
                 location: "Horizons & More - 2818 NE Interstate 410 Loop, San Antonio, TX 78217",
                 description: "The Dungeon Presents: Player’s Ball. An evening dedicated to style, games, and high-class leisure.",
-                startTimeUTC: "20250906T160000Z",
-                endTimeUTC: "20250906T200000Z"
+                startTimeUTC: "20250914T010000Z",
+                endTimeUTC: "20250914T070000Z"
             };
 
-            // Google Calendar Link
             const googleLink = `https://www.google.com/calendar/render?action=TEMPLATE&text=${encodeURIComponent(eventDetails.title)}&dates=${eventDetails.startTimeUTC}/${eventDetails.endTimeUTC}&details=${encodeURIComponent(eventDetails.description)}&location=${encodeURIComponent(eventDetails.location)}`;
             document.getElementById('google-cal-link').href = googleLink;
 
-            // Outlook Calendar Link
             const outlookLink = `https://outlook.live.com/calendar/0/deeplink/compose?path=/calendar/action/compose&rru=addevent&subject=${encodeURIComponent(eventDetails.title)}&startdt=${eventDetails.startTimeUTC}&enddt=${eventDetails.endTimeUTC}&body=${encodeURIComponent(eventDetails.description)}&location=${encodeURIComponent(eventDetails.location)}`;
             document.getElementById('outlook-cal-link').href = outlookLink;
             
-            // ICS/Apple Calendar Link
             document.getElementById('ics-cal-link').addEventListener('click', (e) => {
                 e.preventDefault();
-                const icsContent = [
-                    "BEGIN:VCALENDAR", "VERSION:2.0", "BEGIN:VEVENT",
-                    `URL:${document.URL}`, `DTSTART:${eventDetails.startTimeUTC}`, `DTEND:${eventDetails.endTimeUTC}`,
-                    `SUMMARY:${eventDetails.title}`, `DESCRIPTION:${eventDetails.description}`, `LOCATION:${eventDetails.location}`,
-                    "END:VEVENT", "END:VCALENDARN"
-                ].join("\n");
-
+                const icsContent = ["BEGIN:VCALENDAR", "VERSION:2.0", "BEGIN:VEVENT", `URL:${document.URL}`, `DTSTART:${eventDetails.startTimeUTC}`, `DTEND:${eventDetails.endTimeUTC}`, `SUMMARY:${eventDetails.title}`, `DESCRIPTION:${eventDetails.description}`, `LOCATION:${eventDetails.location}`, "END:VEVENT", "END:VCALENDAR"].join("\n");
                 const blob = new Blob([icsContent], { type: 'text/calendar;charset=utf-8' });
                 const link = document.createElement('a');
                 link.href = URL.createObjectURL(blob);
@@ -381,19 +491,15 @@
             });
 
             if(calendarToggle && calendarDropdown){
-                calendarToggle.addEventListener('click', (e) => {
-                    e.stopPropagation();
-                    calendarDropdown.classList.toggle('hidden');
-                });
+                calendarToggle.addEventListener('click', (e) => { e.stopPropagation(); calendarDropdown.classList.toggle('hidden'); });
             }
             
             document.querySelectorAll('#calendar-dropdown a').forEach(link => {
                 link.addEventListener('click', () => {
                     calendarDropdown.classList.add('hidden');
-                    calendarButtonText.innerText = "Success! Check Calendar";
+                    calendarButtonText.innerText = "Success!";
                     calendarToggle.style.borderColor = 'var(--glow-magenta)';
                     calendarToggle.style.color = 'var(--glow-magenta)';
-
                     setTimeout(() => {
                         calendarButtonText.innerText = "Add to Calendar";
                         calendarToggle.style.borderColor = 'var(--glow-cyan)';
@@ -410,15 +516,96 @@
 
             // Scroll Animation Logic
             const observer = new IntersectionObserver((entries) => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        entry.target.classList.add('is-visible');
-                    }
-                });
+                entries.forEach(entry => { if (entry.isIntersecting) entry.target.classList.add('is-visible'); });
             }, { threshold: 0.1 });
+            document.querySelectorAll('.fade-in-section').forEach(section => observer.observe(section));
 
-            document.querySelectorAll('.fade-in-section').forEach(section => {
-                observer.observe(section);
+            // Text Scramble Effect
+            class TextScramble {
+                constructor(el) { this.el = el; this.chars = '!<>-_\\/[]{}—=+*^?#_'; this.update = this.update.bind(this); }
+                setText(newText) {
+                    const oldText = this.el.innerText; const length = Math.max(oldText.length, newText.length);
+                    const promise = new Promise((resolve) => this.resolve = resolve); this.queue = [];
+                    for (let i = 0; i < length; i++) {
+                        const from = oldText[i] || ''; const to = newText[i] || '';
+                        const start = Math.floor(Math.random() * 40); const end = start + Math.floor(Math.random() * 40);
+                        this.queue.push({ from, to, start, end });
+                    }
+                    cancelAnimationFrame(this.frameRequest); this.frame = 0; this.update(); return promise;
+                }
+                update() {
+                    let output = ''; let complete = 0;
+                    for (let i = 0, n = this.queue.length; i < n; i++) {
+                        let { from, to, start, end, char } = this.queue[i];
+                        if (this.frame >= end) { complete++; output += to; } 
+                        else if (this.frame >= start) {
+                            if (!char || Math.random() < 0.28) { char = this.randomChar(); this.queue[i].char = char; }
+                            output += `<span class="opacity-50">${char}</span>`;
+                        } else { output += from; }
+                    }
+                    this.el.innerHTML = output;
+                    if (complete === this.queue.length) { this.resolve(); } 
+                    else { this.frameRequest = requestAnimationFrame(this.update); this.frame++; }
+                }
+                randomChar() { return this.chars[Math.floor(Math.random() * this.chars.length)]; }
+            }
+            const scrambleElements = document.querySelectorAll('.data-scramble');
+            scrambleElements.forEach(el => {
+                const fx = new TextScramble(el);
+                const phrases = ['[STATUS: ENCRYPTED]', '// ACCESS DENIED //', '[REDACTING DATA...]', 'AWAITING KEY...'];
+                let counter = 0;
+                const next = () => {
+                    fx.setText(phrases[counter]).then(() => setTimeout(next, 2000 + Math.random() * 3000));
+                    counter = (counter + 1) % phrases.length;
+                };
+                next();
+            });
+
+            // Modal Logic
+            const rsvpButton = document.getElementById('rsvp-button');
+            const rsvpModal = document.getElementById('rsvp-modal');
+            const rsvpForm = document.getElementById('rsvp-form');
+            const rsvpSuccess = document.getElementById('rsvp-success');
+            const guestCountEl = document.getElementById('guest-count');
+            let guestCount = 137;
+
+            const openModal = (modal) => modal.classList.add('active');
+            const closeModal = (modal) => modal.classList.remove('active');
+
+            rsvpButton.addEventListener('click', () => openModal(rsvpModal));
+            
+            rsvpForm.addEventListener('submit', (e) => {
+                e.preventDefault();
+                rsvpForm.classList.add('hidden');
+                rsvpSuccess.classList.remove('hidden');
+                guestCount++;
+                guestCountEl.textContent = guestCount;
+            });
+            
+            document.querySelectorAll('.close-modal-button').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    closeModal(btn.closest('.modal-overlay'));
+                    // Reset RSVP form
+                    setTimeout(() => {
+                        rsvpForm.classList.remove('hidden');
+                        rsvpSuccess.classList.add('hidden');
+                        document.getElementById('alias-input').value = '';
+                    }, 300);
+                });
+            });
+
+            document.querySelectorAll('.intel-button').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const modalId = btn.dataset.modal;
+                    const modal = document.getElementById(modalId);
+                    if(modal) openModal(modal);
+                });
+            });
+
+            document.querySelectorAll('.modal-overlay').forEach(modal => {
+                modal.addEventListener('click', (e) => {
+                     if(e.target === modal) closeModal(modal);
+                });
             });
         });
     </script>
