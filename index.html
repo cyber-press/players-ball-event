@@ -1,614 +1,986 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DATASTREAM // VENUE: Horizon & More</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/tone/14.7.77/Tone.js"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
-    <style>
-        :root {
-            --glow-cyan: rgba(0, 255, 255, 0.8);
-            --glow-magenta: rgba(255, 0, 255, 0.8);
-        }
-        html {
-            scroll-behavior: smooth;
-        }
-        body {
-            font-family: 'Roboto', sans-serif;
-            background-color: #02001a;
-            color: #E0E0E0;
-            overflow-x: hidden;
-        }
-        /* Custom Scrollbar */
-        ::-webkit-scrollbar { width: 10px; }
-        ::-webkit-scrollbar-track { background: #02001a; }
-        ::-webkit-scrollbar-thumb { background: rgba(0, 255, 255, 0.2); border-radius: 5px; }
-        ::-webkit-scrollbar-thumb:hover { background: rgba(0, 255, 255, 0.4); }
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Player’s Ball | The Dungeon — Horizons &amp; More</title>
+  <meta name="description" content="Style, games, and high-class leisure. Player’s Ball at Horizons &amp; More. Access: Complimentary.">
 
-        #grid-background {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100vh;
-            background-image:
-                linear-gradient(rgba(2, 0, 26, 0.97), rgba(2, 0, 26, 0.97)),
-                linear-gradient(to right, rgba(0, 255, 255, 0.1) 1px, transparent 1px),
-                linear-gradient(to bottom, rgba(0, 255, 255, 0.1) 1px, transparent 1px);
-            background-size: 40px 40px;
-            animation: pan-grid 60s linear infinite;
-            z-index: -1;
-        }
-        @keyframes pan-grid {
-            0% { background-position: 0 0; }
-            100% { background-position: 1200px 1200px; }
-        }
+  <meta property="og:type" content="event">
+  <meta property="og:title" content="Player’s Ball — The Dungeon">
+  <meta property="og:description" content="Style, games, and high-class leisure. Access: Complimentary.">
+  <meta property="og:url" content="https://cyber-press.github.io/players-ball-event/">
+  <meta property="og:image" content="og-image.jpg">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Player’s Ball — The Dungeon">
+  <meta name="twitter:description" content="Style, games, and high-class leisure. Access: Complimentary.">
+  <meta name="twitter:image" content="og-image.jpg">
+  <link rel="canonical" href="https://cyber-press.github.io/players-ball-event/">
 
-        .font-orbitron { font-family: 'Orbitron', sans-serif; }
-        .header-bg { 
-            background-color: rgba(2, 0, 26, 0.8);
-            backdrop-filter: blur(10px);
-        }
-        .glass-panel { 
-            background-color: rgba(10, 25, 47, 0.3);
-            backdrop-filter: blur(12px);
-            border: 1px solid rgba(0, 255, 255, 0.2);
-            box-shadow: 0 0 20px rgba(0, 255, 255, 0.1);
-            transition: border-color 0.3s ease, box-shadow 0.3s ease;
-        }
-        
-        .text-glow-cyan { text-shadow: 0 0 8px var(--glow-cyan); }
-        .text-glow-magenta { text-shadow: 0 0 8px var(--glow-magenta); }
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    :root{
+      --bg:#090B10;
+      --card:#0F1320;
+      --grid: radial-gradient(1px 1px at 1px 1px, rgba(255,255,255,.08) 1px, transparent 0);
+      /* THEME (default: fuchsia) */
+      --accent:#D946EF;
+      --accent-soft: rgba(217,70,239,.16);
+      --accent-contrast:#ffffff;
+      --frame:#d4af37; /* gold frame stays constant */
+    }
+    /* Theme presets */
+    [data-theme="emerald"]{ --accent:#10B981; --accent-soft: rgba(16,185,129,.16); }
+    [data-theme="rust"]{ --accent:#B45309; --accent-soft: rgba(180,83,9,.18); }
+    [data-theme="gold"]{ --accent:#D4AF37; --accent-soft: rgba(212,175,55,.18); }
+    [data-theme="bordeaux"]{ --accent:#7A1E3A; --accent-soft: rgba(122,30,58,.22); }
+    [data-theme="amethyst"]{ --accent:#8B5CF6; --accent-soft: rgba(139,92,246,.18); }
+    /* When custom is active we set vars via style attribute in JS */
 
-        .btn-primary {
-            background-color: transparent;
-            color: var(--glow-cyan);
-            font-weight: 700;
-            padding: 0.75rem 1.5rem;
-            border-radius: 0.375rem;
-            border: 2px solid var(--glow-cyan);
-            transition: all 0.3s ease;
-            box-shadow: 0 0 10px var(--glow-cyan), inset 0 0 10px var(--glow-cyan);
-        }
-        .btn-primary:hover {
-            background-color: var(--glow-cyan);
-            color: #02001a;
-            box-shadow: 0 0 25px var(--glow-cyan), inset 0 0 5px var(--glow-cyan);
-            transform: translateY(-2px);
-        }
-        .dark-map {
-            filter: invert(1) hue-rotate(180deg) contrast(0.9);
-        }
+    body{ background:linear-gradient(180deg,#07080E,#0B0E18 60%,#07080E), var(--grid); background-size: 100% 100%, 24px 24px; }
 
-        .event-card {
-            border-left: 2px solid transparent;
-            border-right: 2px solid transparent;
-            transition: all 0.3s ease;
-        }
+    .grain{ position:relative; overflow:hidden; }
+    .grain::after{
+      content:""; position:absolute; inset:0;
+      background-image:url('grain.png'); background-size:250px 250px;
+      opacity:.20; mix-blend-mode:soft-light; pointer-events:none;
+      filter:contrast(140%) brightness(100%);
+    }
+    .vintage-frame{position:relative;border:6px solid var(--frame);border-radius:18px;box-shadow:inset 0 0 0 2px rgba(255,255,255,.14), 0 18px 40px rgba(0,0,0,.45)}
+    .vintage-frame::before{ content:"";position:absolute;inset:0;border-radius:12px;
+      background:radial-gradient(80% 80% at 50% 50%, rgba(0,0,0,0) 55%, rgba(0,0,0,.25) 100%);
+      mix-blend-mode:multiply;pointer-events:none; }
+    .vintage-tone img{filter:contrast(104%) saturate(96%) sepia(5%)}
 
-        .event-card:hover {
-            border-left-color: var(--glow-magenta);
-            border-right-color: var(--glow-magenta);
-            background-color: rgba(255, 0, 255, 0.05);
-        }
-        
-        /* Glitch Effect */
-        .glitch { animation: glitch 2.5s infinite steps(1); }
-        @keyframes glitch {
-            0%, 100% { clip-path: inset(0 0 0 0); }
-            5%, 8% { clip-path: inset(25% 0 75% 0); transform: translate(-5px, 0); }
-            9%, 12% { clip-path: inset(50% 0 10% 0); transform: translate(5px, 0); }
-            13%, 16% { clip-path: inset(80% 0 5% 0); transform: translate(-3px, 2px); }
-            17% { clip-path: inset(0 0 0 0); transform: translate(0, 0); }
-            90% { clip-path: inset(0 0 0 0); }
-            92% { clip-path: inset(90% 0 5% 0); }
-            95% { clip-path: inset(20% 0 40% 0); }
-            98% { clip-path: inset(70% 0 10% 0); }
-        }
+    /* Accent utilities */
+    .card-accent{ border-color: color-mix(in srgb, var(--accent), #000 74%) !important; }
+    .text-accent{ color: var(--accent); }
+    .underline-accent{ text-decoration-color: var(--accent); }
+    .btn-accent{
+      background: var(--accent); color: var(--accent-contrast);
+      border: 1px solid color-mix(in srgb, var(--accent), #fff 20%);
+      box-shadow: 0 8px 18px color-mix(in srgb, var(--accent), transparent 80%);
+      transition: transform .12s ease, filter .15s ease, box-shadow .15s ease;
+    }
+    .btn-accent:hover{ filter:brightness(1.08); box-shadow:0 10px 22px color-mix(in srgb, var(--accent), transparent 76%); }
+    .btn-ghost{ background: rgba(0,0,0,.4); color: #fff; border:1px solid rgba(255,255,255,.12); transition: transform .12s ease, background .15s ease; }
+    .btn-ghost:hover{ background: rgba(0,0,0,.6); }
+    .badge-accent{ background: var(--accent-soft); border: 1px solid color-mix(in srgb, var(--accent), #222 70%); color: var(--accent-contrast); }
 
-        /* Scroll Animations */
-        .fade-in-section {
-            opacity: 0;
-            transform: translateY(20px);
-            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
-        }
-        .fade-in-section.is-visible {
-            opacity: 1;
-            transform: translateY(0);
-        }
+    /* Effects */
+    .tilt{transform:perspective(1000px) rotateX(var(--rx,0deg)) rotateY(var(--ry,0deg)) translateZ(0)}
+    .transition-fast{transition:transform .15s ease, box-shadow .2s ease}
+    .magnet{transition:transform .12s ease}
+    .reveal{opacity:0; transform:translateY(16px); transition:opacity .6s ease, transform .6s ease}
+    .reveal.show{opacity:1; transform:translateY(0)}
+    .lightbox{position:fixed; inset:0; display:none; align-items:center; justify-content:center; background:rgba(0,0,0,.8); z-index:60}
+    .lightbox.open{display:flex}
+    .lightbox img{max-width:90vw; max-height:85vh; border-radius:12px; box-shadow:0 20px 60px rgba(0,0,0,.6)}
+    #toast{position:fixed; left:50%; bottom:28px; transform:translateX(-50%); background:#111827; color:#fff; padding:10px 14px; border-radius:999px; border:1px solid rgba(255,255,255,.12); box-shadow:0 8px 20px rgba(0,0,0,.35); opacity:0; pointer-events:none; transition:opacity .25s ease; z-index:70}
+    #toast.show{opacity:1}
+    #backTop{position:fixed; right:18px; bottom:18px; opacity:0; transform:translateY(12px); transition:opacity .2s, transform .2s; z-index:55}
+    #backTop.show{opacity:1; transform:translateY(0)}
 
-        /* Modal Styles */
-        .modal-overlay {
-            position: fixed; inset: 0; background-color: rgba(2, 0, 26, 0.8);
-            backdrop-filter: blur(5px); z-index: 100;
-            display: flex; align-items: center; justify-content: center;
-            opacity: 0; pointer-events: none; transition: opacity 0.3s ease;
-        }
-        .modal-overlay.active { opacity: 1; pointer-events: auto; }
-        .modal-content {
-             transform: scale(0.95); transition: transform 0.3s ease;
-        }
-        .modal-overlay.active .modal-content { transform: scale(1); }
-    </style>
+    /* Theme chips & custom popover */
+    .theme-chip{border:1px solid rgba(255,255,255,.12); background:rgba(255,255,255,.04); padding:.35rem .6rem; border-radius:999px; font-size:.75rem}
+    .theme-chip[data-active="1"]{outline:2px solid var(--accent); background: var(--accent-soft);}
+    .theme-dot{display:inline-block; width:.7rem; height:.7rem; border-radius:50%; margin-right:.4rem; vertical-align:middle}
+    .dot-emerald{ background:#10B981 } .dot-rust{ background:#B45309 } .dot-gold{ background:#D4AF37 }
+    .dot-bordeaux{ background:#7A1E3A } .dot-amethyst{ background:#8B5CF6 }
+    .custom-pop{ position:absolute; right:0; top:100%; margin-top:.5rem; background:#0B0E18; border:1px solid rgba(255,255,255,.12); border-radius:12px; padding:.6rem; box-shadow:0 18px 40px rgba(0,0,0,.45); display:none; z-index:50}
+    .custom-pop.show{display:block}
+    input[type="color"].chip-color{ -webkit-appearance:none; appearance:none; background:none; border:none; width:1.25rem; height:1.25rem; padding:0; border-radius:999px; overflow:hidden }
+    input[type="color"].chip-color::-webkit-color-swatch{ border:none; border-radius:999px }
+    input[type="color"].chip-color::-moz-color-swatch{ border:none; border-radius:999px }
+
+    @media (prefers-reduced-motion: reduce){
+      .animate-pulse, .animate-bounce, .animate-spin { animation: none !important; }
+      .tilt{transform:none !important}
+    }
+  
+    /* ===== LUXURIOUS 70s THEME ===== */
+    [data-theme="lux70s"]{
+      --accent:#E3C468;                 /* Luxe gold */
+      --accent-soft: rgba(227,196,104,.18);
+      --grid: radial-gradient(1px 1px at 1px 1px, rgba(227,196,104,.14) 1px, transparent 0);
+      --card:#15101E;
+    }
+    /* Golden glow on hero when Lux is active */
+    [data-theme="lux70s"] .vintage-frame{
+      border-color: #E3C468;
+      box-shadow: inset 0 0 0 2px rgba(255,255,255,.12), 0 24px 60px rgba(227,196,104,.22);
+    }
+    [data-theme="lux70s"] .vintage-frame::after{
+      content:""; position:absolute; inset:-1px; border-radius:18px; pointer-events:none;
+      background: conic-gradient(from 0deg, rgba(255,255,255,0), rgba(255,255,255,.10), rgba(255,255,255,0) 35%);
+      mix-blend-mode: overlay; animation: lux_sheen 26s linear infinite;
+    }
+    @keyframes lux_sheen { to { transform: rotate(360deg); } }
+    @media (prefers-reduced-motion: reduce){
+      [data-theme="lux70s"] .vintage-frame::after{ animation: none; }
+    }
+
+  
+/* ===== ULTRA 70s LUX THEME — Full overhaul ===== */
+[data-theme="lux70s"] body{
+  background:
+    radial-gradient(1200px 800px at 10% -10%, #2c0e34 0%, transparent 60%),
+    radial-gradient(1200px 800px at 110% 10%, #57143c 0%, transparent 60%),
+    radial-gradient(1000px 700px at 50% 120%, #1b243b 0%, transparent 65%),
+    repeating-conic-gradient(from 0deg at 50% 50%, rgba(227,196,104,.07) 0deg, rgba(227,196,104,0.0) 8deg 16deg);
+  background-color:#0A0A0F;
+  animation: lux_bg 40s linear infinite;
+  background-size: auto, auto, auto, 1200px 1200px;
+}
+@keyframes lux_bg{
+  0% { background-position: 0 0, 0 0, 0 0, 0 0; }
+  100% { background-position: 0 0, 0 0, 0 0, 1200px 1200px; }
+}
+@media (prefers-reduced-motion: reduce){
+  [data-theme="lux70s"] body{ animation: none; }
+}
+
+/* Typography */
+[data-theme="lux70s"] h1, [data-theme="lux70s"] .lux-title{ font-family: 'Shrikhand', system-ui, sans-serif; letter-spacing:-.01em; }
+[data-theme="lux70s"] h2{ font-family: 'Eczar', Georgia, serif; letter-spacing:.01em; }
+[data-theme="lux70s"] .wordmark{ font-family:'Shrikhand', system-ui; }
+
+/* Accents + buttons */
+[data-theme="lux70s"]{
+  --accent:#FDBA74; /* soft amber */
+  --accent-soft: rgba(253,186,116,.22);
+}
+[data-theme="lux70s"] .btn-accent{
+  background: linear-gradient(135deg, #E3C468 0%, #FF8F68 50%, #C86BD1 100%);
+  border: 0;
+  color: #0b0b0b;
+  text-shadow: 0 1px 0 rgba(255,255,255,.25);
+  box-shadow: 0 10px 24px rgba(227,196,104,.35), inset 0 0 0 1px rgba(255,255,255,.25);
+}
+[data-theme="lux70s"] .btn-accent:hover{ filter:brightness(1.05); }
+[data-theme="lux70s"] .btn-ghost{ background: rgba(0,0,0,.55); border-color: rgba(255,255,255,.18); }
+
+/* Card chrome becomes 70s lacquer */
+[data-theme="lux70s"] #eventCard{
+  border: 0;
+  background: rgba(14,10,22,.55);
+  box-shadow:
+    0 28px 80px rgba(0,0,0,.6),
+    0 0 0 1px rgba(255,255,255,.08) inset,
+    0 0 0 8px rgba(227,196,104,.08) inset;
+  position: relative;
+  overflow: hidden;
+}
+/* Sunburst header band */
+[data-theme="lux70s"] #eventCard::before{
+  content:""; position:absolute; left:-10%; right:-10%; top:-60px; height:220px;
+  background:
+    radial-gradient(700px 140px at 50% 100%, rgba(255,255,255,.12), rgba(255,255,255,0) 70%),
+    repeating-linear-gradient( 45deg,
+      rgba(227,196,104,.25) 0 14px,
+      rgba(255,255,255,0) 14px 28px,
+      rgba(200,107,209,.25) 28px 42px,
+      rgba(255,255,255,0) 42px 56px
+    );
+  filter: blur(0.2px);
+  transform: rotate(-1deg);
+  pointer-events:none;
+  z-index:0;
+}
+/* Retro caption strip */
+[data-theme="lux70s"] #eventCard .text-accent,
+[data-theme="lux70s"] #eventCard .text-xs.uppercase{
+  text-transform: uppercase;
+  letter-spacing: .4em;
+}
+
+/* Layout remap: Make hero full-bleed inside card, overlay countdown as sticker */
+[data-theme="lux70s"] #heroRow{
+  display:block;
+  margin-top: 1.25rem;
+}
+[data-theme="lux70s"] #heroTilt{
+  display:block;
+  width:100%;
+  aspect-ratio: 21/9;
+  border-radius: 22px !important;
+  overflow: hidden;
+  box-shadow: 0 24px 70px rgba(0,0,0,.55);
+}
+[data-theme="lux70s"] #heroTilt img{
+  object-position: 50% 20%;
+  filter: contrast(1.06) saturate(1.1) sepia(.06);
+}
+/* Countdown as retro sticker */
+[data-theme="lux70s"] #countCol{
+  position: absolute;
+  right: 1.2rem;
+  top: 8.8rem;
+  width: 280px;
+  transform: rotate(2.8deg);
+  background: linear-gradient(180deg, rgba(14,10,22,.85), rgba(14,10,22,.65));
+  border: 2px solid rgba(227,196,104,.6) !important;
+  box-shadow: 0 24px 50px rgba(0,0,0,.5), 0 0 0 4px rgba(227,196,104,.10);
+  backdrop-filter: blur(6px);
+  z-index: 2;
+}
+@media (max-width: 768px){
+  [data-theme="lux70s"] #countCol{ position: static; transform:none; width:auto; margin-top: .75rem; }
+  [data-theme="lux70s"] #heroTilt{ aspect-ratio: 16/9; }
+}
+
+/* Title styling */
+[data-theme="lux70s"] #eventCard h1{
+  font-size: clamp(2.2rem, 5vw, 4rem);
+  text-shadow: 0 2px 0 rgba(255,255,255,.15), 0 14px 28px rgba(0,0,0,.45);
+}
+
+/* Links underline flair */
+[data-theme="lux70s"] .underline-accent, [data-theme="lux70s"] a.underline{
+  text-decoration-thickness: 3px;
+  text-underline-offset: 6px;
+}
+
+/* Hero frame goes disco gold */
+[data-theme="lux70s"] .vintage-frame{
+  border:6px solid #E3C468;
+  box-shadow: inset 0 0 0 2px rgba(255,255,255,.14), 0 22px 70px rgba(227,196,104,.28);
+}
+[data-theme="lux70s"] .vintage-frame::before{
+  background: radial-gradient(80% 80% at 50% 50%, rgba(255,255,255,.05) 0%, rgba(0,0,0,.35) 100%);
+}
+[data-theme="lux70s"] .vintage-frame::after{
+  content:""; position:absolute; inset:-1px; border-radius:18px; pointer-events:none;
+  background: conic-gradient(from 0deg, rgba(255,255,255,0), rgba(255,255,255,.10), rgba(255,255,255,0) 35%);
+  mix-blend-mode: overlay; animation: lux_sheen 26s linear infinite;
+}
+@keyframes lux_sheen { to { transform: rotate(360deg); } }
+@media (prefers-reduced-motion: reduce){
+  [data-theme="lux70s"] .vintage-frame::after{ animation: none; }
+}
+
+/* Section cards go deeper and glossier */
+[data-theme="lux70s"] section .rounded-2xl.bg-\[var\(--card\)\]\/70{
+  background: linear-gradient(180deg, rgba(14,10,22,.85), rgba(14,10,22,.65));
+  box-shadow: 0 18px 50px rgba(0,0,0,.5), inset 0 0 0 1px rgba(255,255,255,.06);
+  border:1px solid rgba(227,196,104,.18);
+}
+
+/* Toast & badges tint */
+[data-theme="lux70s"] #toast{ background:#1B1530; border-color: rgba(227,196,104,.35); }
+[data-theme="lux70s"] .badge-accent{ background: rgba(227,196,104,.18); border-color: rgba(227,196,104,.5); color:#fff; }
+
+  
+/* Vinyl spinner + Lux controls (visible only in Lux mode) */
+#luxControls{ display:flex; gap:.5rem; align-items:center; }
+#vinyl{ display:none; }
+[data-theme="lux70s"] #vinyl{ display:inline-block; }
+
+.vinyl{
+  width: 42px; height: 42px; border-radius: 50%; position: relative;
+  background:
+    radial-gradient(circle at 50% 50%, #111 0 6px, transparent 6px),
+    radial-gradient(circle at 50% 50%, rgba(255,255,255,.06) 0 10px, rgba(0,0,0,.85) 11px 18px, rgba(255,255,255,.06) 19px 24px, rgba(0,0,0,.9) 25px 31px, transparent 32px);
+  box-shadow: inset 0 0 0 2px rgba(255,255,255,.06), 0 8px 20px rgba(0,0,0,.45);
+}
+.vinyl::after{
+  content:""; position:absolute; inset:0; border-radius:50%;
+  background:
+    repeating-radial-gradient(circle at 50% 50%, rgba(255,255,255,.08), rgba(255,255,255,.08) 1px, rgba(0,0,0,0) 1px, rgba(0,0,0,0) 3px);
+  mix-blend-mode: overlay; opacity:.5;
+}
+.vinyl.spin{ animation: spin 6s linear infinite; }
+@keyframes spin { to { transform: rotate(360deg);} }
+@media (prefers-reduced-motion: reduce){
+  .vinyl.spin{ animation: none; }
+}
+
+  
+/* Themes dropdown alignment */
+#themeWrap{ display:flex; align-items:center; }
+#themePop{ right:0; }
+
+  
+/* Keep Lux + Themes inline next to Location */
+header nav .theme-chip{ margin-left:.25rem; }
+#themeWrap{ display:inline-block; position:relative; }
+#themePop{ right:0; }
+
+  
+/* YouTube playlist panel */
+#luxControlsWrap{ position: relative; }
+#ytPanel{ z-index:60; display:none; }
+#ytPanel.open{ display:block; }
+#ytList button{ display:flex; width:100%; text-align:left; padding:.4rem .5rem; border-radius:.5rem; border:1px solid rgba(255,255,255,.08); background:rgba(255,255,255,.04); margin-bottom:.35rem; }
+#ytList button[data-active="1"]{ outline:2px solid var(--accent); background: var(--accent-soft); }
+
+  </style>
+  <link href="https://fonts.googleapis.com/css2?family=Shrikhand&family=Eczar:wght@700&display=swap" rel="stylesheet">
 </head>
-<body class="w-full">
-    <div id="grid-background"></div>
+<body class="text-white antialiased selection:bg-[var(--accent-soft)] selection:text-white">
+  <header class="sticky top-0 z-40 backdrop-blur bg-black/40 border-b border-white/10">
+    <div class="max-w-5xl mx-auto px-4 py-3 flex items-center justify-between gap-3">
+      <div class="text-sm tracking-widest text-white/70">THE DUNGEON <span id="heyName" class="text-white/50"></span></div>
+      <nav class="hidden sm:flex items-center gap-4 text-sm">
+        <a href="#details" class="hover:text-accent">Details</a>
+        <a href="#rsvp" class="hover:text-accent">RSVP</a>
+        <a href="#best-dressed" class="hover:text-accent">Best Dressed</a>
+        <a href="#location" class="hover:text-accent">Location</a>
+  <button id="luxToggle" class="theme-chip" data-upgrade="lux">70s Lux</button>
+  <div class="relative" id="themeWrap">
+  <button id="themeBtn" class="theme-chip" aria-expanded="false" aria-controls="themePop">Themes</button>
+  <div id="themePop" class="custom-pop" style="right:0;min-width:280px" role="menu" aria-labelledby="themeBtn" style="min-width: 280px; right:0;">
+    <div class="flex flex-wrap items-center gap-2 justify-end" id="themeBar">
 
-    <!-- Header -->
-    <header class="header-bg border-b border-cyan-500/20 shadow-lg sticky top-0 z-50">
-        <nav class="container mx-auto px-6 py-4 flex justify-between items-center">
-            <div class="text-2xl font-orbitron font-bold text-glow-cyan">THE DUNGEON</div>
-            <div class="hidden md:flex items-center space-x-8">
-                <a href="#events" class="text-gray-300 hover:text-glow-cyan transition smooth-scroll">EVENTS</a>
-                <a href="#location" class="text-gray-300 hover:text-glow-cyan transition smooth-scroll">LOCATION</a>
-                <a href="#about" class="text-gray-300 hover:text-glow-cyan transition smooth-scroll">ABOUT</a>
+        
+        <button class="theme-chip" data-set-theme="emerald"><span class="theme-dot dot-emerald"></span>Emerald</button>
+        <button class="theme-chip" data-set-theme="rust"><span class="theme-dot dot-rust"></span>Rust</button>
+        <button class="theme-chip" data-set-theme="gold"><span class="theme-dot dot-gold"></span>Gold</button>
+        <button class="theme-chip" data-set-theme="bordeaux"><span class="theme-dot dot-bordeaux"></span>Bordeaux</button>
+        <button class="theme-chip" data-set-theme="amethyst"><span class="theme-dot dot-amethyst"></span>Amethyst</button>
+
+        <div class="relative">
+          <button id="customChip" class="theme-chip" data-set-theme="custom">
+            <span class="theme-dot" id="customDot" style="background:#D946EF"></span>Custom
+          </button>
+          <div id="customPop" class="custom-pop">
+            <div class="flex items-center gap-2">
+              <input id="colorPick" type="color" class="chip-color" value="#D946EF" aria-label="Pick accent color"/>
+              <input id="hexInput" class="w-28 px-2 py-1 rounded-md bg-black/40 border border-white/10 text-sm" value="#D946EF" aria-label="Hex value">
+              <button id="applyCustom" class="px-3 py-1 rounded-md btn-accent text-sm">Apply</button>
+              <button id="resetCustom" class="px-3 py-1 rounded-md btn-ghost text-sm">Reset</button>
             </div>
-            <button id="mobile-menu-button" class="md:hidden text-gray-300">
-                 <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7" /></svg>
-            </button>
-        </nav>
-        <!-- Mobile menu -->
-        <div class="hidden md:hidden" id="mobile-menu">
-            <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
-                <a href="#events" class="text-gray-300 hover:bg-cyan-900/50 hover:text-white block px-3 py-2 rounded-md text-base font-medium mobile-nav-link smooth-scroll">EVENTS</a>
-                <a href="#location" class="text-gray-300 hover:bg-cyan-900/50 hover:text-white block px-3 py-2 rounded-md text-base font-medium mobile-nav-link smooth-scroll">LOCATION</a>
-                <a href="#about" class="text-gray-300 hover:bg-cyan-900/50 hover:text-white block px-3 py-2 rounded-md text-base font-medium mobile-nav-link smooth-scroll">ABOUT</a>
-            </div>
+            <div class="text-[11px] text-white/50 mt-2">Tip: the page remembers your color.</div>
+          </div>
         </div>
-    </header>
-
-    <!-- Main Content -->
-    <div class="container mx-auto px-6 py-12">
-        <div class="flex flex-col lg:flex-row gap-10">
-
-            <!-- Left Column: Main Info -->
-            <main class="w-full lg:w-2/3">
-                <!-- Venue Header -->
-                <div class="mb-8 fade-in-section">
-                    <h1 class="relative font-orbitron text-5xl md:text-6xl font-extrabold text-white text-glow-cyan glitch">Horizon & More</h1>
-                    <p class="text-lg text-cyan-200/50 mt-2">// 2818 NE Interstate 410 Loop, San Antonio, TX 78217</p>
-                </div>
-                
-                <!-- Hero Image -->
-                <div class="fade-in-section relative rounded-lg shadow-xl mb-8 overflow-hidden border-2 border-magenta-500/30">
-                     <img src="https://placehold.co/800x400/02001a/ff00ff?text=Player's+Ball" alt="Player's Ball Event Image" class="w-full h-auto object-cover">
-                     <div class="absolute inset-0 bg-black/30"></div>
-                </div>
-
-                <!-- Upcoming Events Section -->
-                <div id="events" class="fade-in-section glass-panel rounded-lg shadow-xl p-8">
-                    <h2 class="font-orbitron text-3xl font-bold text-white border-b border-cyan-500/20 pb-4 mb-6 text-glow-cyan">Upcoming Transmissions</h2>
-                    
-                    <div class="space-y-8">
-                        <!-- Event Card: Player's Ball -->
-                        <div class="event-card p-4 -m-4 rounded-lg">
-                            <div class="flex flex-col md:flex-row items-center gap-6">
-                                <div class="w-full">
-                                    <h3 class="font-bold text-3xl text-white text-glow-magenta">Player's Ball</h3>
-                                    <p class="text-magenta-300/70 mb-4">Transmission Source: The Dungeon</p>
-                                    
-                                    <!-- Countdown Timer -->
-                                    <div id="countdown" class="grid grid-cols-4 gap-4 text-center my-6">
-                                        <div class="glass-panel py-2 rounded"><p id="days" class="font-orbitron text-4xl text-glow-cyan">00</p><span class="text-xs text-cyan-300/50">DAYS</span></div>
-                                        <div class="glass-panel py-2 rounded"><p id="hours" class="font-orbitron text-4xl text-glow-cyan">00</p><span class="text-xs text-cyan-300/50">HOURS</span></div>
-                                        <div class="glass-panel py-2 rounded"><p id="minutes" class="font-orbitron text-4xl text-glow-cyan">00</p><span class="text-xs text-cyan-300/50">MINUTES</span></div>
-                                        <div class="glass-panel py-2 rounded"><p id="seconds" class="font-orbitron text-4xl text-glow-cyan">00</p><span class="text-xs text-cyan-300/50">SECONDS</span></div>
-                                    </div>
-                                    <div id="live-status" class="hidden text-center my-6">
-                                        <p class="font-orbitron text-4xl text-glow-magenta animate-pulse">TRANSMISSION LIVE</p>
-                                    </div>
-
-                                    <p class="mb-4">An evening dedicated to style, games, and high-class leisure.</p>
-                                    <div class="flex items-center text-sm space-x-4 mb-4">
-                                        <span><span class="font-bold">//</span> 8:00 PM - 2:00 AM</span>
-                                        <span class="text-cyan-800">&bull;</span>
-                                        <span class="font-bold text-glow-magenta">ACCESS: COMPLIMENTARY</span>
-                                    </div>
-                                    <div class="relative inline-block mt-4">
-                                        <button id="calendar-button-toggle" class="btn-primary inline-flex items-center gap-2">
-                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z" clip-rule="evenodd" /></svg>
-                                            <span id="calendar-button-text">Add to Calendar</span>
-                                        </button>
-                                        <div id="calendar-dropdown" class="hidden absolute bottom-full mb-2 w-full glass-panel rounded-lg shadow-xl overflow-hidden z-10">
-                                            <ul class="text-center">
-                                                <li><a href="#" id="google-cal-link" target="_blank" class="block w-full px-4 py-3 text-sm text-gray-300 hover:bg-cyan-900/50 transition duration-150 ease-in-out">Google Calendar</a></li>
-                                                <li><a href="#" id="outlook-cal-link" target="_blank" class="block w-full px-4 py-3 text-sm text-gray-300 hover:bg-cyan-900/50 transition duration-150 ease-in-out">Outlook</a></li>
-                                                <li><a href="#" id="ics-cal-link" class="block w-full px-4 py-3 text-sm text-gray-300 hover:bg-cyan-900/50 transition duration-150 ease-in-out">Apple / .ics</a></li>
-                                            </ul>
-                                        </div>
-                                    </div>
-                                    
-                                    <hr class="border-cyan-500/10 my-8">
-                                    
-                                    <!-- Event Intel Section -->
-                                    <h3 class="font-orbitron text-xl font-bold text-white mb-4 text-glow-cyan">// Event Intel</h3>
-                                    <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
-                                        <button class="intel-button glass-panel p-4 rounded-lg text-center hover:border-magenta-500/50" data-modal="prize-modal">🏆<span class="block text-sm mt-2">Prize Protocol</span></button>
-                                        <button class="intel-button glass-panel p-4 rounded-lg text-center hover:border-magenta-500/50" data-modal="games-modal">🎲<span class="block text-sm mt-2">Game Matrix</span></button>
-                                        <button class="intel-button glass-panel p-4 rounded-lg text-center hover:border-magenta-500/50" data-modal="lounge-modal">💨<span class="block text-sm mt-2">Lounge Access</span></button>
-                                    </div>
-
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <!-- Divider -->
-                        <hr class="border-cyan-500/10">
-
-                        <!-- Enhanced Future Event Placeholder -->
-                         <div class="p-4 -m-4 rounded-lg opacity-60">
-                            <div class="relative border-2 border-cyan-500/20 p-6 rounded-lg">
-                                <!-- Corner brackets for style -->
-                                <div class="absolute top-1 left-1 w-4 h-4 border-t-2 border-l-2 border-cyan-500/50"></div>
-                                <div class="absolute top-1 right-1 w-4 h-4 border-t-2 border-r-2 border-cyan-500/50"></div>
-                                <div class="absolute bottom-1 left-1 w-4 h-4 border-b-2 border-l-2 border-cyan-500/50"></div>
-                                <div class="absolute bottom-1 right-1 w-4 h-4 border-b-2 border-r-2 border-cyan-500/50"></div>
-                                
-                                <div class="flex flex-col md:flex-row items-center gap-6">
-                                    <div class="text-cyan-500/50">
-                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" /></svg>
-                                    </div>
-                                    <div class="w-full">
-                                        <h3 class="font-bold text-3xl text-white">Project: Chimera</h3>
-                                        <p class="text-gray-500 mb-4">Transmission Source: [REDACTED]</p>
-                                        <p class="text-cyan-300 font-mono text-sm h-10 data-scramble">[STATUS: ENCRYPTED]...</p>
-                                        <p class="font-orbitron text-2xl text-cyan-300/50 mt-4">DATE: OCTOBER 2025</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- About Section -->
-                <div id="about" class="fade-in-section glass-panel rounded-lg shadow-xl p-8 mt-8">
-                     <h2 class="font-orbitron text-3xl font-bold text-white border-b border-cyan-500/20 pb-4 mb-6 text-glow-cyan">Venue Datapack</h2>
-                     <p class="text-gray-300 leading-relaxed">Horizon & More is a versatile event space located conveniently in San Antonio, perfect for hosting exclusive and private gatherings. Featuring a spacious indoor setting, an outdoor patio, full bar service, and ample parking, it's the ideal location for your next premier event.</p>
-                </div>
-
-                <!-- Map Section -->
-                <div id="location" class="fade-in-section glass-panel rounded-lg shadow-xl mt-8 overflow-hidden">
-                     <h2 class="font-orbitron text-3xl font-bold text-white p-8 pb-4 text-glow-cyan">Navigation Matrix</h2>
-                     <div class="p-8 pt-0">
-                        <div class="rounded-lg overflow-hidden border-2 border-cyan-500/30 h-96">
-                            <iframe class="dark-map w-full h-full"
-                                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3472.775815324545!2d-98.42050402465719!3d29.492211442118324!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x865c6062f4434255%3A0x6731a542159cf058!2s2818%20NE%20Interstate%20410%20Loop%2C%20San%20Antonio%2C%20TX%2078217!5e0!3m2!1sen!2sus!4v1725333105745!5m2!1sen!2sus"
-                                style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade">
-                            </iframe>
-                        </div>
-                     </div>
-                </div>
-            </main>
-
-            <!-- Right Column: Sidebar -->
-            <aside class="w-full lg:w-1/3 fade-in-section">
-                <div class="glass-panel rounded-lg shadow-xl p-6 sticky top-28">
-                     <button id="rsvp-button" class="btn-primary w-full mb-6">
-                        RSVP / Confirm Signal
-                     </button>
-
-                     <h2 class="font-orbitron text-xl font-bold text-white pb-4 text-glow-cyan">System Status</h2>
-                     <div class="space-y-3 text-sm font-mono text-cyan-300">
-                        <div class="flex justify-between items-center"><span>Network</span><span class="text-green-400">Online</span></div>
-                        <div class="flex justify-between items-center"><span>Datastream</span><span class="text-green-400">Stable</span></div>
-                        <div class="flex justify-between items-center"><span>Confirmed Signals</span><span id="guest-count" class="text-green-400">137</span></div>
-                     </div>
-                     
-                     <hr class="border-cyan-500/20 my-6">
-
-                     <h2 class="font-orbitron text-xl font-bold text-white pb-4 text-glow-cyan">Social Network</h2>
-                     <div class="flex space-x-4">
-                        <a href="#" class="text-gray-400 hover:text-glow-cyan transition duration-300 hover:drop-shadow-[0_0_5px_var(--glow-cyan)]"><svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M22.46,6C21.69,6.35 20.86,6.58 20,6.69C20.88,6.16 21.56,5.32 21.88,4.31C21.05,4.81 20.13,5.16 19.16,5.36C18.37,4.5 17.26,4 16,4C13.65,4 11.73,5.92 11.73,8.29C11.73,8.63 11.77,8.96 11.84,9.28C8.28,9.09 5.11,7.38 2.9,4.79C2.53,5.42 2.33,6.15 2.33,6.94C2.33,8.43 3.11,9.75 4.26,10.54C3.54,10.52 2.87,10.31 2.29,10.03V10.08C2.29,12.09 3.71,13.78 5.6,14.17C5.25,14.26 4.87,14.31 4.49,14.31C4.21,14.31 3.94,14.28 3.68,14.23C4.22,15.89 5.82,17.06 7.69,17.1C6.27,18.23 4.4,18.87 2.38,18.87C2.03,18.87 1.69,18.85 1.36,18.81C3.25,20.04 5.5,20.8 8,20.8C16,20.8 20.25,14.18 20.25,8.78C20.25,8.58 20.25,8.39 20.24,8.19C21.1,7.57 21.86,6.84 22.46,6Z"></path></svg></a>
-                        <a href="#" class="text-gray-400 hover:text-glow-cyan transition duration-300 hover:drop-shadow-[0_0_5px_var(--glow-cyan)]"><svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M12,2A10,10 0 0,0 2,12C2,16.42 4.87,20.17 8.84,21.5C9.34,21.58 9.5,21.27 9.5,21C9.5,20.77 9.5,20.14 9.5,19.31C6.73,19.91 6.14,17.97 6.14,17.97C5.68,16.81 5.03,16.5 5.03,16.5C4.12,15.88 5.1,15.9 5.1,15.9C6.1,15.97 6.63,16.93 6.63,16.93C7.5,18.45 8.97,18 9.54,17.76C9.63,17.11 9.89,16.67 10.17,16.42C7.95,16.17 5.62,15.31 5.62,11.5C5.62,10.39 6,9.5 6.65,8.79C6.55,8.54 6.2,7.5 6.75,6.15C6.75,6.15 7.59,5.88 9.5,7.17C10.29,6.95 11.15,6.84 12,6.84C12.85,6.84 13.71,6.95 14.5,7.17C16.41,5.88 17.25,6.15 17.25,6.15C17.8,7.5 17.45,8.54 17.35,8.79C18,9.5 18.38,10.39 18.38,11.5C18.38,15.32 16.04,16.16 13.81,16.41C14.17,16.72 14.5,17.33 14.5,18.26C14.5,19.6 14.5,20.68 14.5,21C14.5,21.27 14.66,21.59 15.17,21.5C19.14,20.16 22,16.42 22,12A10,10 0 0,0 12,2Z"></path></svg></a>
-                        <a href="#" class="text-gray-400 hover:text-glow-cyan transition duration-300 hover:drop-shadow-[0_0_5px_var(--glow-cyan)]"><svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M7.8,2H16.2C19.4,2 22,4.6 22,7.8V16.2A5.8,5.8 0 0,1 16.2,22H7.8C4.6,22 2,19.4 2,16.2V7.8A5.8,5.8 0 0,1 7.8,2M7.6,4A3.6,3.6 0 0,0 4,7.6V16.4C4,18.39 5.61,20 7.6,20H16.4A3.6,3.6 0 0,0 20,16.4V7.6C20,5.61 18.39,4 16.4,4H7.6M17.25,5.5A1.25,1.25 0 0,1 18.5,6.75A1.25,1.25 0 0,1 17.25,8A1.25,1.25 0 0,1 16,6.75A1.25,1.25 0 0,1 17.25,5.5M12,7A5,5 0 0,1 17,12A5,5 0 0,1 12,17A5,5 0 0,1 7,12A5,5 0 0,1 12,7M12,9A3,3 0 0,0 9,12A3,3 0 0,0 12,15A3,3 0 0,0 15,12A3,3 0 0,0 12,9Z"></path></svg></a>
-                     </div>
-                </div>
-            </aside>
-        </div>
+      
     </div>
+  </div>
 
-    <!-- Modals -->
-    <!-- RSVP Modal -->
-    <div id="rsvp-modal" class="modal-overlay">
-        <div class="modal-content glass-panel rounded-lg shadow-xl p-8 w-full max-w-md m-4">
-            <h2 class="font-orbitron text-2xl text-white text-glow-cyan mb-4">Confirm Signal</h2>
-            <p class="text-gray-400 mb-6">Register your alias to confirm your attendance at the Player's Ball.</p>
-            <form id="rsvp-form">
-                <input type="text" id="alias-input" placeholder="Enter Alias..." class="w-full bg-cyan-900/20 border border-cyan-500/30 rounded-md px-4 py-2 text-white placeholder-gray-500 focus:ring-2 focus:ring-cyan-400 focus:outline-none">
-                <div class="mt-6 flex justify-end gap-4">
-                    <button type="button" class="close-modal-button text-gray-400 hover:text-white">Cancel</button>
-                    <button type="submit" class="btn-primary">Confirm</button>
-                </div>
-            </form>
-            <div id="rsvp-success" class="hidden text-center">
-                <h3 class="font-orbitron text-2xl text-green-400">Signal Confirmed!</h3>
-                <p class="text-gray-400 mt-2">Your attendance has been logged. We'll see you there.</p>
-                <button type="button" class="close-modal-button mt-6 btn-primary">Close</button>
-            </div>
-        </div>
+      </nav>
+      <!-- Theme switcher -->
+      </div>
+</div>
+</header>
+
+  <main>
+    <!-- Event Card -->
+    <section class="max-w-5xl mx-auto px-4 pt-10 pb-6 reveal">
+      <div id="eventCard" class="rounded-2xl bg-[var(--card)]/70 border card-accent p-6 md:p-10 shadow-xl">
+        <div>
+          <p class="text-accent text-xs uppercase tracking-[0.35em]">Transmission Source</p>
+          <h1 class="text-4xl md:text-5xl font-bold mt-2 tilt transition-fast" id="titleTilt">Player’s Ball <span id="vinyl" class="vinyl align-middle ml-2" aria-hidden="true"></span></h1>
+<div id="luxControlsWrap" class="relative">
+  <div id="luxControls" class="mt-2 items-center gap-2">
+    <button id="stingerBtn" class="theme-chip">Play</button>
+    <div class="inline-flex rounded-full border border-white/10 overflow-hidden text-xs" role="tablist" aria-label="Audio source">
+      <button id="srcStinger" class="px-3 py-1.5 bg-black/40" role="tab" aria-selected="true">Stinger</button>
+      <button id="srcYT" class="px-3 py-1.5 hover:bg-black/30" role="tab" aria-selected="false">YouTube</button>
     </div>
+    <button id="ytOpen" class="theme-chip">🎵 Playlist</button>
+    <button id="enableLuxNow" class="theme-chip">Enable 70s Lux</button>
+    <span id="luxHint" class="text-white/50 text-xs">Tip: Lux mode reveals the vinyl + full makeover.</span>
+  </div>
+  <div id="ytPanel" class="custom-pop" style="right:0; max-width: 480px;">
+    <div class="text-sm mb-2 font-semibold">Hip‑Hop Playlist</div>
+    <div id="ytPlayerWrap" class="w-[320px] max-w-full rounded-lg overflow-hidden border border-white/10 mb-2">
+      <div id="ytPlayer" style="aspect-ratio:16/9;"></div>
+    </div>
+    <div id="ytList" class="max-h-56 overflow-auto mb-2 text-sm"></div>
+    <form id="ytAddForm" class="flex gap-2 mb-2" autocomplete="off">
+      <input id="ytUrl" class="flex-1 px-2 py-1 rounded-md bg-black/40 border border-white/10" placeholder="Paste YouTube URL or ID" />
+      <input id="ytTitle" class="w-40 px-2 py-1 rounded-md bg-black/40 border border-white/10" placeholder="Title (optional)" />
+      <button class="px-3 py-1 rounded-md btn-accent text-sm" type="submit">Add</button>
+    </form>
+    <div class="text-[11px] text-white/50">Your playlist saves in this browser. Click a track to load & play.<br>Tip: if the player doesn’t appear, try disabling strict blockers or open this file via HTTPS instead of file://</div>
+  </div>
+</div>
+          <p class="mt-3 text-white/80">Style, games, and high-class leisure. <span class="text-white/60">Access: Complimentary</span></p>
+          <p class="mt-4 text-lg">
+            <span class="font-semibold">Saturday, September 13, 2025</span>
+            <span class="text-white/70">• 8:00 PM – 2:00 AM</span>
+          </p>
+          <p class="text-white/80 mt-1">
+            <span class="font-medium">Venue:</span> Horizons &amp; More, 2818 NE Interstate Loop 410, San Antonio, TX 78217
+          </p>
+        </div>
+
+        <!-- Row: Hero + Countdown -->
+        <div id="heroRow" class="mt-6 grid md:grid-cols-2 gap-4 items-stretch">
+          <button class="grain vintage-frame vintage-tone tilt transition-fast group relative" id="heroTilt" aria-label="Open image">
+            <img src="players-ball-hero.jpg" alt="70s-inspired couple portrait for Player’s Ball"
+                 class="w-full h-full object-cover rounded-2xl aspect-[4/3] sm:aspect-[3/2] md:aspect-[16/10] object-[50%_18%]" />
+            <span class="absolute right-3 bottom-3 text-[11px] px-2 py-1 rounded-md bg-black/50 border border-white/10 opacity-0 group-hover:opacity-100 transition">Tap to view</span>
+          </button>
+
+          <div id="countCol" class="rounded-2xl bg-black/40 border border-white/10 p-4 sm:p-6 flex flex-col justify-between">
+            <div>
+              <div class="text-xs tracking-widest text-white/70 text-center">COUNTDOWN</div>
+              <div class="mt-2 grid grid-cols-4 gap-2">
+                <div class="rounded-lg bg-black/40 border border-white/10 p-3 text-center"><div id="dd" class="text-2xl font-bold tabular-nums transition">00</div><div class="text-[10px] uppercase tracking-wider text-white/60">Days</div></div>
+                <div class="rounded-lg bg-black/40 border border-white/10 p-3 text-center"><div id="hh" class="text-2xl font-bold tabular-nums transition">00</div><div class="text-[10px] uppercase tracking-wider text-white/60">Hours</div></div>
+                <div class="rounded-lg bg-black/40 border border-white/10 p-3 text-center"><div id="mm" class="text-2xl font-bold tabular-nums transition">00</div><div class="text-[10px] uppercase tracking-wider text-white/60">Minutes</div></div>
+                <div class="rounded-lg bg-black/40 border border-white/10 p-3 text-center"><div id="ss" class="text-2xl font-bold tabular-nums transition">00</div><div class="text-[10px] uppercase tracking-wider text-white/60">Seconds</div></div>
+              </div>
+              <div id="liveBanner" class="hidden mt-3 mx-auto w-fit inline-flex items-center gap-2 text-xs px-3 py-1 rounded-full badge-accent">
+                <span class="w-2 h-2 rounded-full bg-white/70 animate-pulse"></span>Event is live
+              </div>
+            </div>
+            <div class="mt-6 flex flex-wrap items-center gap-3 justify-center">
+              <a id="gcal" class="magnet px-4 py-2 rounded-lg btn-accent" target="_blank" rel="noopener">Google Calendar</a>
+              <a id="outlook" class="magnet px-4 py-2 rounded-lg btn-accent" target="_blank" rel="noopener">Outlook</a>
+              <a href="players-ball-event-updated.ics" class="magnet px-4 py-2 rounded-lg btn-ghost" download>Apple / .ics</a>
+              <button id="shareBtn" class="magnet px-4 py-2 rounded-lg btn-ghost">Share</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Dress Code toggle -->
+        <div class="mt-6 rounded-2xl bg-black/30 border border-white/10 p-4">
+          <button id="dressBtn" class="flex items-center justify-between w-full text-left">
+            <span class="font-semibold">Dress Code: 70s Chic — Velvet, emerald, gold accents</span>
+            <svg id="dressIcon" class="size-5 text-white/70 transition" viewBox="0 0 24 24"><path fill="currentColor" d="M7 10l5 5 5-5z"/></svg>
+          </button>
+          <div id="dressBody" class="grid grid-cols-1 sm:grid-cols-3 gap-3 overflow-hidden transition-[grid-template-rows]">
+            <ul class="text-white/70 list-disc list-inside mt-3">
+              <li>Velvet suits, jumpsuits, wide lapels</li>
+              <li>Gold jewelry, hoop earrings</li>
+              <li>Earthy tones: rust, emerald, mustard</li>
+            </ul>
+            <ul class="text-white/70 list-disc list-inside mt-3">
+              <li>Optional: hats, canes, silk scarves</li>
+              <li>Clean sneakers ok with tailored fits</li>
+              <li>No athletic shorts or slides</li>
+            </ul>
+            <div class="text-white/70 mt-3">Tip: We’ll spotlight the best looks in the gallery below — bring your A‑game.</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Details -->
+    <section id="details" class="max-w-5xl mx-auto px-4 py-8 reveal">
+      <div class="grid md:grid-cols-2 gap-6">
+        <div class="rounded-2xl bg-[var(--card)]/70 border border-white/10 p-6">
+          <h2 class="text-xl font-semibold">What to Expect</h2>
+          <ul class="mt-3 space-y-2 text-white/80 list-disc list-inside">
+            <li>Prizes for best dressed</li>
+            <li>Games inside</li>
+            <li>Cigars on the patio</li>
+          </ul>
+        </div>
+        <div class="rounded-2xl bg-[var(--card)]/70 border border-white/10 p-6" id="rsvp">
+          <h2 class="text-xl font-semibold">RSVP</h2>
+          <p class="text-white/70 mt-2">Complimentary access. RSVP to help us plan seating.</p>
+          <form class="mt-4" id="rsvpForm">
+            <label class="block text-sm text-white/70">Name</label>
+            <input id="name" required class="w-full mt-1 rounded-lg bg-black/40 border border-white/10 p-2" placeholder="Your name">
+            <label class="block text-sm text-white/70 mt-3">Guests</label>
+            <div class="mt-1 inline-flex items-center rounded-lg border border-white/10 overflow-hidden">
+              <button type="button" class="px-3 py-2" onclick="chg(-1)">−</button>
+              <input id="guests" class="w-16 text-center bg-black/40 py-2" value="1" readonly>
+              <button type="button" class="px-3 py-2" onclick="chg(1)">+</button>
+            </div>
+            <div class="mt-4 flex gap-3">
+              <button class="magnet px-4 py-2 rounded-lg btn-accent" type="submit">Submit RSVP</button>
+              <button id="saveBtn" class="magnet px-4 py-2 rounded-lg btn-ghost" type="button">Save for later</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </section>
+
+    <!-- Best Dressed Mini‑Gallery -->
+    <section id="best-dressed" class="max-w-5xl mx-auto px-4 pb-16 reveal">
+      <div class="rounded-2xl bg-[var(--card)]/70 border border-white/10 p-6">
+        <div class="flex items-end justify-between gap-4 flex-wrap">
+          <h2 class="text-xl font-semibold">Best Dressed — Spotlight</h2>
+          <button id="shuffleLooks" class="magnet text-sm underline underline-accent hover:text-accent">Shuffle</button>
+        </div>
+        <p class="mt-1 text-white/70 text-sm">We’ll feature standout fits from the floor. Winners announced near midnight.</p>
+        <div id="gallery" class="mt-5 grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
+          <button class="relative group" data-cap="Look 01 — Velvet energy"><img src="players-ball-hero.jpg" class="w-full h-64 object-cover rounded-xl border border-white/10"/><span class="absolute left-2 bottom-2 text-[11px] px-2 py-1 rounded-md bg-black/60 border border-white/10 opacity-0 group-hover:opacity-100 transition">View</span></button>
+          <button class="relative group" data-cap="Look 02 — Emerald suit game"><img src="players-ball-hero.jpg" class="w-full h-64 object-cover rounded-xl border border-white/10"/><span class="absolute left-2 bottom-2 text-[11px] px-2 py-1 rounded-md bg-black/60 border border-white/10 opacity-0 group-hover:opacity-100 transition">View</span></button>
+          <button class="relative group" data-cap="Look 03 — Gold hoops, clean lines"><img src="players-ball-hero.jpg" class="w-full h-64 object-cover rounded-xl border border-white/10"/><span class="absolute left-2 bottom-2 text-[11px] px-2 py-1 rounded-md bg-black/60 border border-white/10 opacity-0 group-hover:opacity-100 transition">View</span></button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Location -->
+    <section id="location" class="max-w-5xl mx-auto px-4 pb-16 reveal">
+      <div class="rounded-2xl bg-[var(--card)]/70 border border-white/10 p-6">
+        <h2 class="text-xl font-semibold">Location</h2>
+        <p class="mt-2 text-white/80">
+          <a class="underline underline-accent hover:text-accent" target="_blank" rel="noopener" href="https://maps.google.com/?q=Horizons%20%26%20More,%202818%20NE%20Interstate%20Loop%20410,%20San%20Antonio,%20TX%2078217">
+            Horizons &amp; More — 2818 NE Interstate Loop 410, San Antonio, TX 78217
+          </a>
+        </p>
+        <div class="mt-4">
+          <iframe title="Map" class="w-full h-64 rounded-xl border border-white/10"
+            loading="lazy" referrerpolicy="no-referrer-when-downgrade"
+            src="https://www.google.com/maps?q=Horizons%20%26%20More%202818%20NE%20Interstate%20Loop%20410%2C%20San%20Antonio%2C%20TX%2078217&output=embed">
+          </iframe>
+        </div>
+        <div class="mt-4 flex items-center gap-4 text-sm">
+          <a class="underline underline-accent hover:text-accent" target="_blank" rel="noopener" href="https://instagram.com/">Instagram</a>
+          <a class="underline underline-accent hover:text-accent" target="_blank" rel="noopener" href="https://facebook.com/">Facebook</a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="py-10 text-center text-white/60 text-sm">
+    © <span id="yr"></span> The Dungeon Presents
+  </footer>
+
+  <!-- Lightbox -->
+  <div id="lb" class="lightbox" role="dialog" aria-modal="true" aria-label="Image viewer">
+    <img src="" alt="">
+    <div class="absolute top-4 right-5"><button id="lbClose" class="px-3 py-2 rounded-lg btn-ghost">Close</button></div>
+    <div id="lbCap" class="absolute bottom-4 left-1/2 -translate-x-1/2 text-sm bg-black/60 px-3 py-2 rounded-lg border border-white/10"></div>
+  </div>
+
+  <audio id="stinger" preload="auto" src="stinger.wav" muted></audio>
+
+  <!-- Toast -->
+  <div id="toast" role="status" aria-live="polite">Copied link</div>
+
+  <!-- Back to Top -->
+  <button id="backTop" class="magnet px-3 py-2 rounded-full btn-ghost backdrop-blur text-sm">Back to top</button>
+
+  <!-- JSON-LD Event Schema -->
+  <script type="application/ld+json">
+  {
+    "@context":"https://schema.org",
+    "@type":"Event",
+    "name":"Player’s Ball",
+    "startDate":"2025-09-13T20:00:00-05:00",
+    "endDate":"2025-09-14T02:00:00-05:00",
+    "eventStatus":"https://schema.org/EventScheduled",
+    "eventAttendanceMode":"https://schema.org/OfflineEventAttendanceMode",
+    "description":"The Dungeon Presents: Player’s Ball. Style, games, and high-class leisure.",
+    "isAccessibleForFree":true,
+    "location":{
+      "@type":"Place",
+      "name":"Horizons & More",
+      "address":{
+        "@type":"PostalAddress",
+        "streetAddress":"2818 NE Interstate Loop 410",
+        "addressLocality":"San Antonio",
+        "addressRegion":"TX",
+        "postalCode":"78217",
+        "addressCountry":"US"
+      }
+    },
+    "image":["og-image.jpg"],
+    "organizer":{"@type":"Organization","name":"The Dungeon Presents"},
+    "url":"https://cyber-press.github.io/players-ball-event/"
+  }
+  </script>
+
+  <script>
+    // ---- Config ----
+    const eventTitle = "Player’s Ball";
+    const eventDesc  = "The Dungeon Presents: Player’s Ball. Style, games, and high-class leisure.";
+    const locationLine = "Horizons & More - 2818 NE Interstate Loop 410, San Antonio, TX 78217";
+    const startUTC = "2025-09-14T01:00:00Z"; const endUTC = "2025-09-14T07:00:00Z";
+
+    // Calendar links
+    const gcal = document.getElementById('gcal'); const outlook = document.getElementById('outlook');
+    const gDates = "20250914T010000Z/20250914T070000Z";
+    gcal.href = `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${encodeURIComponent(eventTitle)}&dates=${gDates}&details=${encodeURIComponent(eventDesc)}&location=${encodeURIComponent(locationLine)}`;
+    outlook.href = `https://outlook.live.com/calendar/0/deeplink/compose?path=/calendar/action/compose&rru=addevent&subject=${encodeURIComponent(eventTitle)}&startdt=${encodeURIComponent(startUTC)}&enddt=${encodeURIComponent(endUTC)}&body=${encodeURIComponent(eventDesc)}&location=${encodeURIComponent(locationLine)}`;
+
+    // Countdown
+    const target = new Date(startUTC).getTime();
+    const dd = document.getElementById("dd"), hh = document.getElementById("hh"), mm = document.getElementById("mm"), ss = document.getElementById("ss"), liveBanner = document.getElementById("liveBanner");
+    function setFlip(el, val){ el.textContent = val; el.animate([{transform:"scale(1.0)"},{transform:"scale(1.08)"},{transform:"scale(1.0)"}], {duration:180, easing:"ease-out"}); }
+    function updateCountdown(){
+      const diff = target - Date.now();
+      if(diff <= 0){ ["00","00","00","00"].forEach((v,i)=>setFlip([dd,hh,mm,ss][i], v)); liveBanner.classList.remove("hidden"); return; }
+      const d = Math.floor(diff / 86400000), h = Math.floor(diff % 86400000 / 3600000), m = Math.floor(diff % 3600000 / 60000), s = Math.floor(diff % 60000 / 1000);
+      [String(d),String(h),String(m),String(s)].map(v=>v.padStart(2,'0')).forEach((v,i)=>setFlip([dd,hh,mm,ss][i], v));
+    }
+    updateCountdown(); setInterval(updateCountdown, 1000);
+
+    // RSVP + confetti + localStorage
+    function chg(delta){ const inp = document.getElementById('guests'); const v = Math.max(1, Math.min(10, (parseInt(inp.value,10)||1)+delta)); inp.value=v; try{localStorage.setItem('pb_guests',v);}catch(e){} }
+    window.chg = chg;
+    const form = document.getElementById('rsvpForm'); const nameEl = document.getElementById('name'); const heyName = document.getElementById('heyName'); const saveBtn = document.getElementById('saveBtn');
+
+    try{ const n = localStorage.getItem('pb_name'); if(n){ nameEl.value=n; heyName.textContent = `• Welcome back, ${n}`; } const g = localStorage.getItem('pb_guests'); if(g){ document.getElementById('guests').value=g; } }catch(e){}
+    function toast(msg){ const t = document.getElementById('toast'); t.textContent=msg; t.classList.add('show'); setTimeout(()=>t.classList.remove('show'),1800); }
+    function confetti(duration=1200){
+      const cv=document.createElement('canvas'); cv.width=innerWidth; cv.height=innerHeight; cv.style.cssText="position:fixed;inset:0;z-index:80;pointer-events:none"; document.body.appendChild(cv);
+      const ctx=cv.getContext('2d'); const accent=getComputedStyle(document.documentElement).getPropertyValue('--accent').trim()||'#D946EF';
+      const colors=[accent,'#F472B6','#22D3EE','#FBBF24','#34D399']; const N=140; const parts=new Array(N).fill(0).map(()=>({x:Math.random()*cv.width,y:-20-Math.random()*cv.height,r:3+Math.random()*4,c:colors[Math.random()*colors.length|0],s:2+Math.random()*3,a:Math.random()*Math.PI}));
+      let start=performance.now(); function frame(t){ ctx.clearRect(0,0,cv.width,cv.height); parts.forEach(p=>{p.y+=p.s;p.x+=Math.sin((p.y+p.a)/20);ctx.fillStyle=p.c;ctx.beginPath();ctx.arc(p.x,p.y,p.r,0,Math.PI*2);ctx.fill();}); if(performance.now()-(cv._begin||(cv._begin=performance.now()))<duration){ requestAnimationFrame(frame);}else{cv.remove();} } requestAnimationFrame(frame);
+    }
+    form.addEventListener('submit',(e)=>{e.preventDefault(); const n=nameEl.value.trim()||"Guest"; try{localStorage.setItem('pb_name',n);}catch(e){} heyName.textContent=`• See you soon, ${n}!`; confetti(1500); if(navigator.vibrate){navigator.vibrate(40);} toast("RSVP received — you’re on the list"); form.reset();});
+    if(saveBtn){ saveBtn.addEventListener('click',()=>{ const n=nameEl.value.trim(); if(n){ try{localStorage.setItem('pb_name',n);}catch(e){} heyName.textContent=`• Noted, ${n}`; toast("Saved locally"); } else toast("Enter your name first"); }); }
+
+    // Lightbox + reveal + tilt + magnet
+    const lb=document.getElementById('lb'), lbImg=lb.querySelector('img'), lbCap=document.getElementById('lbCap');
+    function openLb(src,cap){ lbImg.src=src; lbCap.textContent=cap||""; lb.classList.add('open'); } function closeLb(){ lb.classList.remove('open'); lbImg.src=""; }
+    document.getElementById('lbClose').addEventListener('click', closeLb); lb.addEventListener('click', e=>{ if(e.target===lb) closeLb(); });
+    document.getElementById('heroTilt').addEventListener('click', ()=>openLb('players-ball-hero.jpg','Player’s Ball — preview'));
+    document.querySelectorAll('#gallery button').forEach(b=>b.addEventListener('click',()=>openLb(b.querySelector('img').src,b.dataset.cap))); addEventListener('keydown',e=>{ if(e.key==='Escape') closeLb(); });
+    const io=new IntersectionObserver(es=>{es.forEach(en=>{ if(en.isIntersecting){ en.target.classList.add('show'); io.unobserve(en.target);} });},{threshold:.1}); document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
+    function bindTilt(el){ const r=el.getBoundingClientRect(); function onMove(e){ const x=(e.clientX-r.left)/r.width-.5, y=(e.clientY-r.top)/r.height-.5; el.style.setProperty('--ry',`${x*6}deg`); el.style.setProperty('--rx',`${-y*6}deg`);} el.addEventListener('mousemove',onMove); el.addEventListener('mouseleave',()=>{ el.style.setProperty('--ry','0deg'); el.style.setProperty('--rx','0deg');}); addEventListener('scroll',()=>{el.style.setProperty('--ry','0deg'); el.style.setProperty('--rx','0deg');},{passive:true}); } bindTilt(document.getElementById('heroTilt')); bindTilt(document.getElementById('titleTilt'));
+    document.querySelectorAll('.magnet').forEach(btn=>{ const s=8; btn.addEventListener('mousemove',e=>{ const r=btn.getBoundingClientRect(), x=((e.clientX-r.left)/r.width-.5)*s, y=((e.clientY-r.top)/r.height-.5)*s; btn.style.transform=`translate(${x}px,${y}px)`; }); btn.addEventListener('mouseleave',()=>btn.style.transform='translate(0,0)'); });
+    const backTop=document.getElementById('backTop'); backTop.addEventListener('click',()=>scrollTo({top:0,behavior:'smooth'})); addEventListener('scroll',()=>{ if(scrollY>600) backTop.classList.add('show'); else backTop.classList.remove('show'); document.body.style.backgroundPosition=`0px ${scrollY*-0.05}px, 0 0`; },{passive:true});
+
     
-    <!-- Intel Modals -->
-    <div id="prize-modal" class="modal-overlay">
-         <div class="modal-content glass-panel rounded-lg shadow-xl p-8 w-full max-w-md m-4 text-center">
-            <h2 class="font-orbitron text-2xl text-white text-glow-magenta mb-4">Prize Protocol</h2>
-            <p class="text-gray-300">Showcase your finest attire. A grand prize and eternal bragging rights await the most stylish player of the evening. The winner will be judged by a panel of anonymous connoisseurs.</p>
-            <button class="close-modal-button mt-6 btn-primary">Close</button>
-        </div>
-    </div>
-    <div id="games-modal" class="modal-overlay">
-         <div class="modal-content glass-panel rounded-lg shadow-xl p-8 w-full max-w-md m-4 text-center">
-            <h2 class="font-orbitron text-2xl text-white text-glow-magenta mb-4">Game Matrix</h2>
-            <p class="text-gray-300">Engage in high-stakes, high-reward transmissions. Join the lively game of "Bih Better Have My Money," or test your strategy in classic games of Spades & Dominoes. Only the sharpest minds will prevail.</p>
-            <button class="close-modal-button mt-6 btn-primary">Close</button>
-        </div>
-    </div>
-     <div id="lounge-modal" class="modal-overlay">
-         <div class="modal-content glass-panel rounded-lg shadow-xl p-8 w-full max-w-md m-4 text-center">
-            <h2 class="font-orbitron text-2xl text-white text-glow-magenta mb-4">Lounge Access</h2>
-            <p class="text-gray-300">Retreat to the designated patio sector. Enjoy a selection of fine cigars and network with fellow players in a relaxed, sophisticated atmosphere away from the main floor.</p>
-            <button class="close-modal-button mt-6 btn-primary">Close</button>
-        </div>
-    </div>
+    // ----- LUX 70s UPGRADE TOGGLE -----
+    const luxToggle = document.getElementById('luxToggle');
+    function isLux(){ return document.documentElement.getAttribute('data-theme') === 'lux70s'; }
+    function enableLux(){
+      // Save previous theme (and custom hex if applicable), then apply lux
+      const prev = document.documentElement.getAttribute('data-theme') || '';
+      try{
+        localStorage.setItem('pb_prev_theme', prev);
+        if(prev === 'custom'){
+          const c = localStorage.getItem('pb_theme_custom') || '#D946EF';
+          localStorage.setItem('pb_prev_custom', c);
+        }
+      }catch(e){}
+      applyTheme('lux70s'); try{ localStorage.setItem('pb_audio_source','yt'); if(window.pbSetSource){ window.pbSetSource('yt'); } }catch(e){}
+      try{ localStorage.setItem('pb_lux_on','1'); }catch(e){}
+      luxToggle.textContent = '70s Lux Mode: On';
+      toast('70s Lux theme enabled'); try{document.getElementById('eventCard').animate([{transform:'translateY(0px)'},{transform:'translateY(-4px)'},{transform:'translateY(0px)'}],{duration:280,easing:'ease-out'})}catch(e){}; try{refreshLuxControls();}catch(e){};
+    }
+    function disableLux(){
+      try{ const a=document.getElementById('stinger'); if(a){ a.pause(); a.currentTime=0; } }catch(e){}
+
+      // Restore previous selection
+      let prev = ''; let pc = '';
+      try{
+        prev = localStorage.getItem('pb_prev_theme') || '';
+        pc = localStorage.getItem('pb_prev_custom') || '';
+        localStorage.setItem('pb_lux_on','0');
+      }catch(e){}
+      if(prev === 'custom' && pc){
+        applyTheme('custom', pc);
+      }else{
+        applyTheme(prev || '');
+      }
+      luxToggle.textContent = '70s Lux Mode: Off';
+      toast('Back to your theme');
+    }
+    if(luxToggle){
+      luxToggle.addEventListener('click', ()=> isLux() ? disableLux() : enableLux() );
+      // On load, re-apply lux if it was on
+      try{
+        if(localStorage.getItem('pb_lux_on') === '1') enableLux();
+        else luxToggle.textContent = '70s Lux Mode: Off';
+      }catch(e){}
+    }
 
 
-    <!-- Footer -->
-    <footer class="header-bg border-t border-cyan-500/20 mt-12">
-        <div class="container mx-auto px-6 py-4 text-center text-cyan-200/50 text-sm flex justify-between items-center">
-            <p>&copy; 2025 The Dungeon Presents. All Rights Reserved.</p>
-            <button id="mute-button" class="text-cyan-200/50 hover:text-white">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path d="M5.5 3.5A1.5 1.5 0 017 5v1.586l-1.5-1.5V5a.5.5 0 011 0v.586l-2-2V5a1.5 1.5 0 011.5-1.5zM12.5 5A1.5 1.5 0 0114 6.5v4.086l-1-1V6.5a.5.5 0 011 0v3.086l-1-1V6.5a.5.5 0 011 0v.086l-1-1V6.5a.5.5 0 01.5-.5H13a.5.5 0 010 1h-.5v.086l-1-1V6.5a.5.5 0 01.5-.5H13a.5.5 0 010 1h-.5v1.086l-1-1V6.5a.5.5 0 01.5-.5h.5a.5.5 0 010 1h-.5v1.086l-1-1V6.5a.5.5 0 01.5-.5H13a.5.5 0 010 1h-.5v.086l-1-1V6.5A.5.5 0 0112 6v-.5a.5.5 0 01.5-.5z" /><path fill-rule="evenodd" d="M2.293 2.293a1 1 0 011.414 0l14 14a1 1 0 01-1.414 1.414l-14-14a1 1 0 010-1.414zM4 10.5a.5.5 0 01.5.5v3a.5.5 0 01-1 0v-3a.5.5 0 01.5-.5zm2.5-.5a.5.5 0 00-1 0v3a.5.5 0 001 0v-3zM8 10.5a.5.5 0 01.5.5v3a.5.5 0 01-1 0v-3A.5.5 0 018 10.5zm2.5-.5a.5.5 0 00-1 0v3a.5.5 0 001 0v-3z" clip-rule="evenodd" /></svg>
-            </button>
-        </div>
-    </footer>
+    // ----- THEME SWITCHER + CUSTOM PICKER -----
+    const themeButtons=document.querySelectorAll('[data-set-theme]');
+    const customChip=document.getElementById('customChip'); const customPop=document.getElementById('customPop');
+    const colorPick=document.getElementById('colorPick'); const hexInput=document.getElementById('hexInput'); const customDot=document.getElementById('customDot');
+    function clamp(n){ return Math.max(0, Math.min(255, n)); }
+    function hexToRgb(hex){ hex = (hex||'').trim(); if(!hex) return {r:217,g:70,b:239}; if(hex[0]!=='#') hex = '#'+hex; if(hex.length===4){ const r=hex[1],g=hex[2],b=hex[3]; hex = '#'+r+r+g+g+b+b; } const num=parseInt(hex.slice(1),16); return {r:(num>>16)&255, g:(num>>8)&255, b:num&255}; }
+    function toHex({r,g,b}){ const h=(n)=>n.toString(16).padStart(2,'0'); return '#'+h(clamp(r))+h(clamp(g))+h(clamp(b)); }
+    function setCustomAccent(hex){
+      const {r,g,b}=hexToRgb(hex); const soft=`rgba(${r},${g},${b},.18)`;
+      document.documentElement.style.setProperty('--accent', toHex({r,g,b}));
+      document.documentElement.style.setProperty('--accent-soft', soft);
+      customDot.style.background = toHex({r,g,b});
+    }
+    function applyTheme(t, maybeHex){
+      document.documentElement.setAttribute('data-theme', t||'');
+      themeButtons.forEach(b=> b.dataset.active = (b.dataset.setTheme===t ? '1':'0'));
+      if(t==='custom'){
+        const h = (maybeHex || hexInput.value || colorPick.value || '#D946EF').trim();
+        setCustomAccent(h);
+        try{ localStorage.setItem('pb_theme','custom'); localStorage.setItem('pb_theme_custom', h.startsWith('#')?h:'#'+h); }catch(e){}
+      }else{
+        try{ localStorage.setItem('pb_theme', t||''); }catch(e){}
+      }
+    }
+    themeButtons.forEach(btn=> btn.addEventListener('click', ()=>{ if(btn===customChip){ customPop.classList.toggle('show'); } else { customPop.classList.remove('show'); applyTheme(btn.dataset.setTheme); } }));
+    document.getElementById('applyCustom').addEventListener('click', ()=>{ const h=(hexInput.value||colorPick.value||'#D946EF'); colorPick.value = h.startsWith('#')?h:'#'+h; hexInput.value = colorPick.value; applyTheme('custom', h); toast('Custom theme applied'); });
+    document.getElementById('resetCustom').addEventListener('click', ()=>{ colorPick.value = '#D946EF'; hexInput.value = '#D946EF'; applyTheme(''); toast('Theme reset'); });
+    colorPick.addEventListener('input', ()=>{ hexInput.value = colorPick.value; setCustomAccent(colorPick.value); });
+    hexInput.addEventListener('input', ()=>{ let v=hexInput.value.trim(); if(v && v[0]!=='#') v='#'+v; if(/^#([0-9a-fA-F]{3}|[0-9a-fA-F]{6})$/.test(v)){ colorPick.value=v; setCustomAccent(v); }});
+    document.addEventListener('click', (e)=>{ if(!customPop.contains(e.target) && e.target!==customChip) customPop.classList.remove('show'); });
 
-    <script>
-        document.addEventListener('DOMContentLoaded', () => {
-             // --- Audio Setup ---
-            let audioMuted = false;
-            let audioStarted = false;
-            const synth = new Tone.Synth({ oscillator: { type: "sine" }, envelope: { attack: 0.005, decay: 0.1, sustain: 0.3, release: 1 } }).toDestination();
+    // ----- THEME DEEP-LINKS + DISCOVERABILITY -----
+    function qs(name){ const u = new URL(location.href); return u.searchParams.get(name); }
+    const paramTheme = qs('theme'); const paramLux = qs('lux');
+    if((paramTheme && paramTheme.toLowerCase()==='lux70s') || (paramLux==='1')){
+      try{ enableLux(); }catch(e){ /* enable later via button */ }
+    }
+    const enableLuxNow = document.getElementById('enableLuxNow');
+    function refreshLuxControls(){
+      const isOn = (document.documentElement.getAttribute('data-theme') === 'lux70s');
+      if(enableLuxNow){ enableLuxNow.style.display = isOn ? 'none' : 'inline-flex'; }
+      const stBtn = document.getElementById('stingerBtn');
+      if(stBtn){ stBtn.disabled = !isOn; stBtn.textContent = isOn ? 'Play Stinger' : 'Play Stinger (Enable Lux)'; }
+    }
+    if(enableLuxNow){ enableLuxNow.addEventListener('click', ()=>{ try{ enableLux(); }finally{ refreshLuxControls(); } }); }
+    refreshLuxControls();
+    // ----- THEME DROPDOWN (themes only) -----
+    const themeBtn = document.getElementById('themeBtn');
+    const themePop = document.getElementById('themePop');
+    if(themeBtn && themePop){
+      function toggleThemeMenu(show){
+        const open = (show===undefined) ? themePop.style.display!=='block' : show;
+        themePop.style.display = open ? 'block' : 'none';
+        themeBtn.setAttribute('aria-expanded', open ? 'true' : 'false');
+      }
+      themeBtn.addEventListener('click', (e)=>{ e.stopPropagation(); toggleThemeMenu(); });
+      document.addEventListener('click', (e)=>{ if(!themePop.contains(e.target) && e.target!==themeBtn) toggleThemeMenu(false); });
+      addEventListener('keydown', (e)=>{ if(e.key==='Escape') toggleThemeMenu(false); });
+    }
 
-            const startAudioContext = async () => {
-                if (audioStarted) return;
-                await Tone.start();
-                audioStarted = true;
-                console.log('Audio context started');
-                window.removeEventListener('click', startAudioContext);
-                window.removeEventListener('keydown', startAudioContext);
-            };
-            window.addEventListener('click', startAudioContext, { once: true });
-            window.addEventListener('keydown', startAudioContext, { once: true });
 
-            const playSound = (note, duration) => { if (!audioMuted && audioStarted) synth.triggerAttackRelease(note, duration); };
-            
-            let hoverSoundTimeout;
-            document.querySelectorAll('a, button, .smooth-scroll, .intel-button').forEach(el => {
-                 el.addEventListener('mouseenter', () => {
-                    clearTimeout(hoverSoundTimeout);
-                    hoverSoundTimeout = setTimeout(() => playSound('C4', '8n'), 50);
-                });
-                el.addEventListener('click', () => playSound('G4', '8n'));
-            });
-            
-            const muteButton = document.getElementById('mute-button');
-            if(muteButton) {
-                muteButton.addEventListener('click', () => {
-                    audioMuted = !audioMuted;
-                    muteButton.classList.toggle('text-glow-magenta', audioMuted);
-                });
-            }
 
-            // Smooth Scroll Logic
-            document.querySelectorAll('a.smooth-scroll').forEach(anchor => {
-                anchor.addEventListener('click', function (e) {
-                    e.preventDefault();
-                    const targetId = this.getAttribute('href');
-                    const targetElement = document.querySelector(targetId);
-                    if (targetElement) {
-                        targetElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                    }
-                });
-            });
+    (function initTheme(){
+      let t='', c=''; try{ t = localStorage.getItem('pb_theme')||''; c = localStorage.getItem('pb_theme_custom')||'#D946EF'; }catch(e){}
+      colorPick.value = c; hexInput.value = c; customDot.style.background=c;
+      if(t==='custom'){ setCustomAccent(c); }
+      applyTheme(t||'');
+    })();
 
-            // Mobile Menu Toggle
-            const mobileMenuButton = document.getElementById('mobile-menu-button');
-            const mobileMenu = document.getElementById('mobile-menu');
-            const mobileNavLinks = document.querySelectorAll('.mobile-nav-link');
 
-            if (mobileMenuButton && mobileMenu) {
-                mobileMenuButton.addEventListener('click', () => {
-                    mobileMenu.classList.toggle('hidden');
-                });
-            }
-
-            mobileNavLinks.forEach(link => {
-                link.addEventListener('click', () => {
-                    if (mobileMenu) {
-                        mobileMenu.classList.add('hidden');
-                    }
-                });
-            });
-
-            // Countdown Timer Logic
-            const countdownElement = document.getElementById('countdown');
-            const liveStatusElement = document.getElementById('live-status');
-            const eventDate = new Date('September 13, 2025 20:00:00').getTime();
-
-            const countdownInterval = setInterval(() => {
-                const now = new Date().getTime();
-                const timeLeft = eventDate - now;
-
-                if (timeLeft < 0) {
-                    clearInterval(countdownInterval);
-                    if (countdownElement) countdownElement.classList.add('hidden');
-                    if (liveStatusElement) liveStatusElement.classList.remove('hidden');
-                    return;
-                }
-
-                const days = Math.floor(timeLeft / (1000 * 60 * 60 * 24));
-                const hours = Math.floor((timeLeft % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-                const minutes = Math.floor((timeLeft % (1000 * 60 * 60)) / (1000 * 60));
-                const seconds = Math.floor((timeLeft % (1000 * 60)) / 1000);
-
-                document.getElementById('days').innerText = String(days).padStart(2, '0');
-                document.getElementById('hours').innerText = String(hours).padStart(2, '0');
-                document.getElementById('minutes').innerText = String(minutes).padStart(2, '0');
-                document.getElementById('seconds').innerText = String(seconds).padStart(2, '0');
-            }, 1000);
-            
-            // Add to Calendar Logic
-            const calendarToggle = document.getElementById('calendar-button-toggle');
-            const calendarDropdown = document.getElementById('calendar-dropdown');
-            const calendarButtonText = document.getElementById('calendar-button-text');
-
-            const eventDetails = {
-                title: "Player’s Ball",
-                location: "Horizons & More - 2818 NE Interstate 410 Loop, San Antonio, TX 78217",
-                description: "The Dungeon Presents: Player’s Ball. An evening dedicated to style, games, and high-class leisure.",
-                startTimeUTC: "20250914T010000Z",
-                endTimeUTC: "20250914T070000Z"
-            };
-
-            const googleLink = `https://www.google.com/calendar/render?action=TEMPLATE&text=${encodeURIComponent(eventDetails.title)}&dates=${eventDetails.startTimeUTC}/${eventDetails.endTimeUTC}&details=${encodeURIComponent(eventDetails.description)}&location=${encodeURIComponent(eventDetails.location)}`;
-            document.getElementById('google-cal-link').href = googleLink;
-
-            const outlookLink = `https://outlook.live.com/calendar/0/deeplink/compose?path=/calendar/action/compose&rru=addevent&subject=${encodeURIComponent(eventDetails.title)}&startdt=${eventDetails.startTimeUTC}&enddt=${eventDetails.endTimeUTC}&body=${encodeURIComponent(eventDetails.description)}&location=${encodeURIComponent(eventDetails.location)}`;
-            document.getElementById('outlook-cal-link').href = outlookLink;
-            
-            document.getElementById('ics-cal-link').addEventListener('click', (e) => {
-                e.preventDefault();
-                const icsContent = ["BEGIN:VCALENDAR", "VERSION:2.0", "BEGIN:VEVENT", `URL:${document.URL}`, `DTSTART:${eventDetails.startTimeUTC}`, `DTEND:${eventDetails.endTimeUTC}`, `SUMMARY:${eventDetails.title}`, `DESCRIPTION:${eventDetails.description}`, `LOCATION:${eventDetails.location}`, "END:VEVENT", "END:VCALENDAR"].join("\n");
-                const blob = new Blob([icsContent], { type: 'text/calendar;charset=utf-8' });
-                const link = document.createElement('a');
-                link.href = URL.createObjectURL(blob);
-                link.download = 'players-ball-event.ics';
-                document.body.appendChild(link);
-                link.click();
-                document.body.removeChild(link);
-            });
-
-            if(calendarToggle && calendarDropdown){
-                calendarToggle.addEventListener('click', (e) => { e.stopPropagation(); calendarDropdown.classList.toggle('hidden'); });
-            }
-            
-            document.querySelectorAll('#calendar-dropdown a').forEach(link => {
-                link.addEventListener('click', () => {
-                    calendarDropdown.classList.add('hidden');
-                    calendarButtonText.innerText = "Success!";
-                    calendarToggle.style.borderColor = 'var(--glow-magenta)';
-                    calendarToggle.style.color = 'var(--glow-magenta)';
-                    setTimeout(() => {
-                        calendarButtonText.innerText = "Add to Calendar";
-                        calendarToggle.style.borderColor = 'var(--glow-cyan)';
-                        calendarToggle.style.color = 'var(--glow-cyan)';
-                    }, 2500);
-                });
-            });
-
-            window.addEventListener('click', (e) => {
-                if(calendarDropdown && !calendarDropdown.classList.contains('hidden') && !calendarToggle.contains(e.target)){
-                    calendarDropdown.classList.add('hidden');
-                }
-            });
-
-            // Scroll Animation Logic
-            const observer = new IntersectionObserver((entries) => {
-                entries.forEach(entry => { if (entry.isIntersecting) entry.target.classList.add('is-visible'); });
-            }, { threshold: 0.1 });
-            document.querySelectorAll('.fade-in-section').forEach(section => observer.observe(section));
-
-            // Text Scramble Effect
-            class TextScramble {
-                constructor(el) { this.el = el; this.chars = '!<>-_\\/[]{}—=+*^?#_'; this.update = this.update.bind(this); }
-                setText(newText) {
-                    const oldText = this.el.innerText; const length = Math.max(oldText.length, newText.length);
-                    const promise = new Promise((resolve) => this.resolve = resolve); this.queue = [];
-                    for (let i = 0; i < length; i++) {
-                        const from = oldText[i] || ''; const to = newText[i] || '';
-                        const start = Math.floor(Math.random() * 40); const end = start + Math.floor(Math.random() * 40);
-                        this.queue.push({ from, to, start, end });
-                    }
-                    cancelAnimationFrame(this.frameRequest); this.frame = 0; this.update(); return promise;
-                }
-                update() {
-                    let output = ''; let complete = 0;
-                    for (let i = 0, n = this.queue.length; i < n; i++) {
-                        let { from, to, start, end, char } = this.queue[i];
-                        if (this.frame >= end) { complete++; output += to; } 
-                        else if (this.frame >= start) {
-                            if (!char || Math.random() < 0.28) { char = this.randomChar(); this.queue[i].char = char; }
-                            output += `<span class="opacity-50">${char}</span>`;
-                        } else { output += from; }
-                    }
-                    this.el.innerHTML = output;
-                    if (complete === this.queue.length) { this.resolve(); } 
-                    else { this.frameRequest = requestAnimationFrame(this.update); this.frame++; }
-                }
-                randomChar() { return this.chars[Math.floor(Math.random() * this.chars.length)]; }
-            }
-            const scrambleElements = document.querySelectorAll('.data-scramble');
-            scrambleElements.forEach(el => {
-                const fx = new TextScramble(el);
-                const phrases = ['[STATUS: ENCRYPTED]', '// ACCESS DENIED //', '[REDACTING DATA...]', 'AWAITING KEY...'];
-                let counter = 0;
-                const next = () => {
-                    fx.setText(phrases[counter]).then(() => setTimeout(next, 2000 + Math.random() * 3000));
-                    counter = (counter + 1) % phrases.length;
-                };
-                next();
-            });
-
-            // Modal Logic
-            const rsvpButton = document.getElementById('rsvp-button');
-            const rsvpModal = document.getElementById('rsvp-modal');
-            const rsvpForm = document.getElementById('rsvp-form');
-            const rsvpSuccess = document.getElementById('rsvp-success');
-            const guestCountEl = document.getElementById('guest-count');
-            let guestCount = 137;
-
-            const openModal = (modal) => modal.classList.add('active');
-            const closeModal = (modal) => modal.classList.remove('active');
-
-            rsvpButton.addEventListener('click', () => openModal(rsvpModal));
-            
-            rsvpForm.addEventListener('submit', (e) => {
-                e.preventDefault();
-                rsvpForm.classList.add('hidden');
-                rsvpSuccess.classList.remove('hidden');
-                guestCount++;
-                guestCountEl.textContent = guestCount;
-            });
-            
-            document.querySelectorAll('.close-modal-button').forEach(btn => {
-                btn.addEventListener('click', () => {
-                    closeModal(btn.closest('.modal-overlay'));
-                    // Reset RSVP form
-                    setTimeout(() => {
-                        rsvpForm.classList.remove('hidden');
-                        rsvpSuccess.classList.add('hidden');
-                        document.getElementById('alias-input').value = '';
-                    }, 300);
-                });
-            });
-
-            document.querySelectorAll('.intel-button').forEach(btn => {
-                btn.addEventListener('click', () => {
-                    const modalId = btn.dataset.modal;
-                    const modal = document.getElementById(modalId);
-                    if(modal) openModal(modal);
-                });
-            });
-
-            document.querySelectorAll('.modal-overlay').forEach(modal => {
-                modal.addEventListener('click', (e) => {
-                     if(e.target === modal) closeModal(modal);
-                });
-            });
+    // ----- VINYL + STINGER AUDIO -----
+    const stAudio = document.getElementById('stinger');
+    const stBtn = document.getElementById('stingerBtn');
+    const vinyl = document.getElementById('vinyl');
+    function setStUI(playing){
+      if(stBtn){ stBtn.textContent = playing ? 'Pause Stinger' : 'Play Stinger'; }
+      if(vinyl){ vinyl.classList.toggle('spin', !!playing); }
+    }
+    if(stBtn && stAudio){
+      stBtn.addEventListener('click', async ()=>{
+        try{ stAudio.muted = false; }catch(e){}
+        if(stAudio.paused){ try{ await stAudio.play(); }catch(e){ toast('Tap again to allow audio'); } }
+        else { stAudio.pause(); }
+      });
+      if(vinyl){
+        vinyl.addEventListener('click', async ()=>{
+          try{ stAudio.muted = false; }catch(e){}
+          if(stAudio.paused){ try{ await stAudio.play(); }catch(e){ toast('Tap again to allow audio'); } }
+          else { stAudio.pause(); }
         });
-    </script>
+      }
+      stAudio.addEventListener('play', ()=> setStUI(true));
+      stAudio.addEventListener('pause', ()=> setStUI(false));
+      stAudio.addEventListener('ended', ()=> setStUI(false));
+    }
+
+
+    // Footer year + onboarding toast
+    document.getElementById('yr').textContent = new Date().getFullYear();
+    if(!localStorage.getItem('pb_seen_custom')){ toast("Try the Custom chip to set your own color"); try{ localStorage.setItem('pb_seen_custom','1'); }catch(e){} }
+  </script>
+
+<script>
+// ---- Unified Stinger / YouTube Player, Auto-select on Lux, Crossfade next ----
+(function(){
+  const stAudio = document.getElementById('stinger');
+  const stBtn = document.getElementById('stingerBtn');
+  const vinyl = document.getElementById('vinyl');
+  const ytOpen = document.getElementById('ytOpen');
+  const ytPanel = document.getElementById('ytPanel');
+  const srcSt = document.getElementById('srcStinger');
+  const srcYT = document.getElementById('srcYT');
+  let source = 'stinger';
+
+  function setSource(s){
+    source = s;
+    try{ localStorage.setItem('pb_audio_source', s); }catch(e){}
+    if(srcSt && srcYT){
+      srcSt.setAttribute('aria-selected', s==='stinger' ? 'true':'false');
+      srcYT.setAttribute('aria-selected', s==='yt' ? 'true':'false');
+      srcSt.classList.toggle('bg-black/40', s==='stinger');
+      srcYT.classList.toggle('bg-black/40', s==='yt');
+    }
+    if(stBtn){ stBtn.textContent = (s==='yt' ? 'Play' : (stAudio?.paused?'Play Stinger':'Pause Stinger')); }
+  }
+  window.pbSetSource = setSource;
+
+  // Restore saved source
+  try{
+    const saved = localStorage.getItem('pb_audio_source');
+    if(saved) setSource(saved); else setSource('stinger');
+  }catch(e){ setSource('stinger'); }
+
+  if(srcSt) srcSt.addEventListener('click', ()=> setSource('stinger'));
+  if(srcYT) srcYT.addEventListener('click', ()=>{ setSource('yt'); ytPanel?.classList.add('open'); });
+  if(ytOpen) ytOpen.addEventListener('click', (e)=>{ e.stopPropagation(); ytPanel?.classList.toggle('open'); });
+  document.addEventListener('click', (e)=>{ if(ytPanel && !ytPanel.contains(e.target) && e.target!==ytOpen) ytPanel.classList.remove('open'); });
+
+  // Crossfade helpers for YouTube
+  let ytPlayer=null, ytReady=false, playlist=[], currentIndex=-1;
+  const LS_KEY='pb_yt_playlist';
+  const DEFAULT_PLAYLIST = [
+    {id:'LPTlvQ1Zet0', title:'Hip‑Hop Track #1', start:8},
+    {id:'ToY6sjSV8h8', title:'Hip‑Hop Track #2', start:9},
+    {id:'HIwAI05Y1fU', title:'Hip‑Hop Track #3', start:2},
+    {id:'tU3p6mz-uxU', title:'Hip‑Hop Track #4', start:5},
+    {id:'p4bjm__JyzE', title:'Hip‑Hop Track #5', start:3},
+    {id:'f3hTnxUhOCs', title:'Hip‑Hop Track #6', start:2},
+    {id:'Q9pjm4cNsfc', title:'Hip‑Hop Track #7', start:3},
+    {id:'l_lblj8Cq0o', title:'Hip‑Hop Track #8', start:2}
+  ];
+  function save(){ try{ localStorage.setItem(LS_KEY, JSON.stringify(playlist)); }catch(e){} }
+  function load(){ try{ const raw=localStorage.getItem(LS_KEY); if(raw) playlist=JSON.parse(raw)||[]; }catch(e){} if(!playlist || playlist.length===0){ playlist=DEFAULT_PLAYLIST.slice(); save(); } }
+
+  function renderList(){
+    const list = document.getElementById('ytList'); if(!list) return; list.innerHTML='';
+    if(playlist.length===0){ list.innerHTML='<div class="text-white/50 text-xs">No tracks yet. Paste a YouTube link above.</div>'; return; }
+    playlist.forEach((it,i)=>{
+      const b=document.createElement('button'); b.dataset.index=i; b.dataset.active=(i===currentIndex?'1':'0'); b.innerHTML=`<span class="inline-block w-6 text-white/60">#${i+1}</span><span class="flex-1">${it.title||('Track '+(i+1))}</span>`;
+      b.addEventListener('click',()=>loadTrack(i,true)); list.appendChild(b);
+    });
+  }
+
+  // Load IFrame API
+  const tag=document.createElement('script'); tag.src='https://www.youtube.com/iframe_api'; document.head.appendChild(tag);
+  window.onYouTubeIframeAPIReady = function(){
+    ytPlayer = new YT.Player('ytPlayer', {
+      height:'180', width:'320', videoId:null,
+      playerVars:(function(){ const pv={playsinline:1, rel:0}; try{ if(/^https?:$/.test(location.protocol)) pv.origin = location.origin; }catch(e){} return pv; })(),
+      events:{
+        onReady: ()=>{ ytReady=true; try{ ytPlayer.unMute(); ytPlayer.setVolume(100); }catch(e){} renderList(); enrichTitles(); },
+        onStateChange: (e)=>{
+          if(e.data===YT.PlayerState.PLAYING){ setStUI(true); }
+          if(e.data===YT.PlayerState.PAUSED || e.data===YT.PlayerState.ENDED){ setStUI(false); }
+          if(e.data===YT.PlayerState.ENDED){ nextTrack(); }
+        }
+      }
+    });
+  };
+
+  // Crossfade volume
+  let FADE_MS = 800;
+  function fadeVolume(fromV, toV, ms){
+    if(!ytPlayer || !ytPlayer.setVolume) return;
+    fromV = Math.max(0, Math.min(100, fromV|0));
+    toV = Math.max(0, Math.min(100, toV|0));
+    const steps = Math.max(1, Math.floor(ms/50));
+    const delta = (toV - fromV)/steps;
+    let i = 0; ytPlayer.setVolume(fromV);
+    const tick = ()=>{
+      i++; const v = Math.round(fromV + delta*i);
+      ytPlayer.setVolume(Math.max(0, Math.min(100, v)));
+      if(i < steps){ setTimeout(tick, 50); }
+    };
+    tick();
+  }
+
+  function loadTrack(i, autoplay){
+    if(!ytReady || !ytPlayer) return; currentIndex=i; const it=playlist[i]; if(!it) return;
+    if(autoplay){ try{ fadeVolume(100, 0, FADE_MS); }catch(e){} }
+    ytPlayer.loadVideoById({videoId: it.id, startSeconds: (it.start||0)}); renderList();
+    if(autoplay){ try{ stAudio?.pause(); }catch(e){} setSource('yt'); ytPanel?.classList.remove('open'); setTimeout(()=>{ try{ fadeVolume(0, 100, FADE_MS);}catch(e){} }, 350); }
+  }
+  function nextTrack(){ if(playlist.length===0) return; const n=(currentIndex+1)%playlist.length; loadTrack(n,true); }
+
+  // Add-track form
+  const ytAddForm=document.getElementById('ytAddForm'), ytUrl=document.getElementById('ytUrl'), ytTitle=document.getElementById('ytTitle');
+  function parseVideoId(input){
+    const v=(input||'').trim(); if(!v) return null;
+    if(/^[a-zA-Z0-9_-]{11}$/.test(v)) return v;
+    let m=v.match(/[?&]v=([a-zA-Z0-9_-]{11})/); if(m) return m[1];
+    m=v.match(/youtu\.be\/([a-zA-Z0-9_-]{11})/); if(m) return m[1];
+    m=v.match(/embed\/([a-zA-Z0-9_-]{11})/); if(m) return m[1];
+    return null;
+  }
+  if(ytAddForm){
+    ytAddForm.addEventListener('submit',(e)=>{
+      e.preventDefault();
+      const id=parseVideoId(ytUrl.value); if(!id){ toast('Invalid YouTube link or ID'); return; }
+      const ts=(function(){ const m=(ytUrl.value||'').match(/[?&]t=(\\d+)/); return m?parseInt(m[1],10):0; })();
+      const t=(ytTitle.value||'').trim();
+      playlist.push({id:id, title:t, start:ts}); save(); renderList(); ytUrl.value=''; ytTitle.value='';
+      if(playlist.length===1 && ytReady){ loadTrack(0,false); }
+    });
+  }
+
+  // Enrich titles via oEmbed (client-side)
+  async function enrichTitles(){
+    try{
+      for(let i=0;i<playlist.length;i++){
+        const it = playlist[i];
+        if(it && (!it.title || /^Hip/i.test(it.title) || /Track #/i.test(it.title))){
+          const url = `https://www.youtube.com/oembed?url=https://www.youtube.com/watch?v=${it.id}&format=json`;
+          try{
+            const res = await fetch(url, {mode:'cors'});
+            if(res.ok){
+              const j = await res.json();
+              if(j && j.title){ it.title = j.title; save(); renderList(); }
+            }
+          }catch(e){}
+        }
+      }
+    }catch(e){}
+  }
+
+  // Main Play behavior
+  if(stBtn){
+    stBtn.addEventListener('click', async ()=>{
+      if(document.documentElement.getAttribute('data-theme')!=='lux70s'){ try{ enableLux(); }catch(e){} }
+      if(source==='stinger'){
+        try{ stAudio.muted=false; }catch(e){}
+        if(stAudio.paused){ try{ await stAudio.play(); }catch(e){ toast('Tap again to allow audio'); } }
+        else stAudio.pause();
+      }else{
+        if(!ytReady || !ytPlayer){ toast('Loading YouTube…'); return; }
+        try{ stAudio.pause(); }catch(e){}
+        // If nothing loaded yet, load first track and autoplay
+        if(currentIndex < 0){ load(); renderList(); loadTrack(0, true); return; }
+        const state = ytPlayer.getPlayerState ? ytPlayer.getPlayerState() : -1;
+        // If player has no video, load current
+        try{
+          const vd = ytPlayer.getVideoData && ytPlayer.getVideoData();
+          if(!vd || !vd.video_id){ loadTrack(currentIndex >= 0 ? currentIndex : 0, true); return; }
+        }catch(e){}
+        if(state===YT.PlayerState.PLAYING){ ytPlayer.pauseVideo(); }
+        else{
+          try{ ytPlayer.playVideo(); }catch(e){ ytPanel?.classList.add('open'); toast('Tap play in the player'); }
+        }
+      }
+    });
+  }
+  if(vinyl){
+    vinyl.addEventListener('click', async ()=>{
+      if(source==='stinger'){
+        try{ stAudio.muted=false; }catch(e){}
+        if(stAudio.paused){ try{ await stAudio.play(); }catch(e){ toast('Tap again to allow audio'); } }
+        else stAudio.pause();
+      }else{
+        if(!ytReady || !ytPlayer){ toast('Loading YouTube…'); return; }
+        const state = ytPlayer.getPlayerState ? ytPlayer.getPlayerState() : -1;
+        if(state===YT.PlayerState.PLAYING){ ytPlayer.pauseVideo(); } else { ytPlayer.playVideo(); }
+      }
+    });
+  }
+
+  // Keep button label + vinyl in sync
+  function setStUI(playing){
+    try{
+      const srcSel = (srcYT?.getAttribute('aria-selected')==='true') ? 'yt' : 'stinger';
+      if(stBtn){ stBtn.textContent = (srcSel==='yt') ? (playing?'Pause':'Play') : (playing?'Pause Stinger':'Play Stinger'); }
+    }catch(e){ if(stBtn){ stBtn.textContent = playing ? 'Pause Stinger' : 'Play Stinger'; } }
+    if(vinyl){ vinyl.classList.toggle('spin', !!playing); }
+  }
+  try{
+    stAudio.addEventListener('play', ()=> setStUI(true));
+    stAudio.addEventListener('pause', ()=> setStUI(false));
+    stAudio.addEventListener('ended', ()=> setStUI(false));
+  }catch(e){}
+
+  // Init playlist
+  load();
+  renderList();
+})();
+</script>
+
 </body>
 </html>
-
