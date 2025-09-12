@@ -144,7 +144,7 @@
         .marquee-content {
             display: inline-block;
             padding-left: 100%;
-            animation: marquee 30s linear infinite;
+            animation: marquee 40s linear infinite;
         }
         .marquee-content span {
             margin: 0 2rem;
@@ -154,18 +154,6 @@
         @keyframes marquee {
             0% { transform: translateX(0); }
             100% { transform: translateX(-100%); }
-        }
-        .video-container {
-            position: relative;
-            padding-bottom: 56.25%; /* 16:9 */
-            height: 0;
-        }
-        .video-container iframe {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
         }
     </style>
 </head>
@@ -178,8 +166,8 @@
             <div class="text-3xl font-fascinate yellow-text">THE DUNGEON</div>
             <div class="hidden md:flex items-center space-x-8">
                 <a href="#events" class="text-gray-300 hover:yellow-text transition smooth-scroll font-righteous text-lg">SHOWTIME</a>
+                <a href="#about" class="text-gray-300 hover:yellow-text transition smooth-scroll font-righteous text-lg">THE HISTORY</a>
                 <a href="#location" class="text-gray-300 hover:yellow-text transition smooth-scroll font-righteous text-lg">THE SPOT</a>
-                <a href="#about" class="text-gray-300 hover:yellow-text transition smooth-scroll font-righteous text-lg">THE 4-1-1</a>
             </div>
             <button id="mobile-menu-button" class="md:hidden text-gray-300">
                  <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7" /></svg>
@@ -189,8 +177,8 @@
         <div class="hidden md:hidden" id="mobile-menu">
             <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
                 <a href="#events" class="text-gray-300 hover:bg-orange-800/50 hover:text-white block px-3 py-2 rounded-md text-base font-medium mobile-nav-link smooth-scroll">SHOWTIME</a>
+                <a href="#about" class="text-gray-300 hover:bg-orange-800/50 hover:text-white block px-3 py-2 rounded-md text-base font-medium mobile-nav-link smooth-scroll">THE HISTORY</a>
                 <a href="#location" class="text-gray-300 hover:bg-orange-800/50 hover:text-white block px-3 py-2 rounded-md text-base font-medium mobile-nav-link smooth-scroll">THE SPOT</a>
-                <a href="#about" class="text-gray-300 hover:bg-orange-800/50 hover:text-white block px-3 py-2 rounded-md text-base font-medium mobile-nav-link smooth-scroll">THE 4-1-1</a>
             </div>
         </div>
     </header>
@@ -199,9 +187,7 @@
     <div class="marquee">
         <div id="marquee-content" class="marquee-content">
              <span>Wishing you peace, love, and soul!</span>
-             <span>Are You Ready!</span>
              <span>Get down at the Player's Ball!</span>
-             <span>Scan the QR code!</span>
         </div>
     </div>
 
@@ -217,18 +203,9 @@
                     <h1 class="font-fascinate text-8xl md:text-9xl text-white rainbow-title">Player's Ball</h1>
                     <p class="font-righteous text-3xl text-yellow-100/70 mt-2">at Horizon & More</p>
                 </div>
-                
-                <!-- Hero Image -->
-                <div class="fade-in-section relative rounded-lg shadow-2xl mb-8 overflow-hidden border-4 border-orange-500/50 h-96">
-                     <img src="9701488a-0457-47ee-8abc-d2d6c837176c.jfif" 
-                          alt="A stylish couple dressed in 70s luxury attire for the Player's Ball" 
-                          class="w-full h-full object-cover object-center"
-                          onerror="this.onerror=null;this.src='https://placehold.co/800x384/291d19/facc15?text=Can+You+Dig+It%3F';">
-                     <div class="absolute inset-0 bg-gradient-to-t from-brown via-brown/50 to-transparent"></div>
-                </div>
 
                 <!-- Upcoming Events Section -->
-                <div id="events" class="fade-in-section funky-panel shadow-xl p-8">
+                <div id="events" class="fade-in-section funky-panel shadow-xl p-8 mt-8">
                     <h2 class="font-righteous text-5xl font-bold text-white border-b-2 border-orange-500/30 pb-4 mb-6 yellow-text">Showtime!</h2>
                     
                     <div>
@@ -272,7 +249,7 @@
                                 
                                 <h3 class="font-righteous text-3xl text-white mb-4 yellow-text">The Soul Train Lineup</h3>
                                 <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
-                                    <button class="intel-button funky-panel p-4 rounded-lg text-center hover:border-yellow-400" data-modal="prize-modal">🏆<span class="block text-sm mt-2">Best Dressed</span></button>
+                                    <button class="intel-button funky-panel p-4 rounded-lg text-center hover:border-yellow-400" data-modal="style-guide-modal">🏆<span class="block text-sm mt-2">Dress Code</span></button>
                                     <button class="intel-button funky-panel p-4 rounded-lg text-center hover:border-yellow-400" data-modal="games-modal">🎲<span class="block text-sm mt-2">Games</span></button>
                                     <button class="intel-button funky-panel p-4 rounded-lg text-center hover:border-yellow-400" data-modal="lounge-modal">💨<span class="block text-sm mt-2">Patio Lounge</span></button>
                                 </div>
@@ -282,10 +259,16 @@
                     </div>
                 </div>
 
-                <!-- About Section -->
+                <!-- History Section -->
                 <div id="about" class="fade-in-section funky-panel shadow-xl p-8 mt-8">
-                     <h2 class="font-righteous text-5xl font-bold text-white border-b-2 border-orange-500/30 pb-4 mb-6 yellow-text">The 4-1-1</h2>
-                     <p class="text-gray-200 leading-relaxed text-lg">Wishing you peace, love, and soul! The Player's Ball is the premier social event of the season. An evening dedicated to style, games, and high-class leisure. Featuring a spacious indoor setting, an outdoor patio, full bar service, and ample parking, it's the ideal location to get down!</p>
+                     <h2 class="font-righteous text-5xl font-bold text-white border-b-2 border-orange-500/30 pb-4 mb-6 yellow-text">Dig the History</h2>
+                     <p class="text-gray-200 leading-relaxed text-lg">
+                        A "Player's Ball" is an annual event that began in 1974 as a gathering for pimps, serving as a social event and celebration of their success. These gatherings often feature extravagant attire and entertainment. The event is historically associated with figures like 
+                        <a href="https://www.google.com/search?q=Bishop+Don+%22Magic%22+Juan" target="_blank" class="orange-text hover:underline font-bold">Bishop Don "Magic" Juan</a> 
+                        and also refers to the 1993 debut single by the 
+                        <a href="https://www.google.com/search?q=Outkast" target="_blank" class="orange-text hover:underline font-bold">hip-hop group Outkast</a>, 
+                        which was named after this tradition.
+                     </p>
                 </div>
 
                 <!-- Map Section -->
@@ -314,36 +297,9 @@
             <!-- Right Column: Sidebar -->
             <aside class="w-full lg:w-1/3 fade-in-section">
                 <div class="funky-panel shadow-xl p-6 sticky top-28">
-                     <button id="rsvp-button" class="btn-primary w-full mb-6">
-                        Get on the List
-                     </button>
-                     
-                     <button id="song-request-button" class="btn-primary w-full mb-6 bg-purple-700 hover:bg-purple-600">
-                        Hit the Request Line
-                     </button>
-
-                     <h2 class="font-righteous text-2xl font-bold text-white pb-4 yellow-text">The Party Line</h2>
-                     <div class="space-y-3 text-lg font-bold text-yellow-100/80">
-                        <div class="flex justify-between items-center"><span>Vibes</span><span class="text-green-400">Righteous</span></div>
-                        <div class="flex justify-between items-center"><span>Music</span><span class="text-green-400">Soulful</span></div>
-                        <div class="flex justify-between items-center"><span>Dancers</span><span id="guest-count" class="text-green-400">137</span></div>
-                     </div>
-                     
-                     <hr class="border-orange-500/20 my-6">
-
-                     <h2 class="font-righteous text-2xl font-bold text-white pb-4 yellow-text">Top Requests</h2>
-                     <ul id="top-requests-list" class="space-y-2 text-yellow-100/80">
-                        <li><span class="font-bold">1.</span> <span class="italic">Waiting for requests...</span></li>
-                        <li><span class="font-bold">2.</span> <span class="italic">...</span></li>
-                        <li><span class="font-bold">3.</span> <span class="italic">...</span></li>
-                     </ul>
-
-                     <hr class="border-orange-500/20 my-6">
-
                      <h2 class="font-righteous text-2xl font-bold text-white pb-4 yellow-text">Get Connected</h2>
                      <div class="flex space-x-4">
-                        <a href="#" class="text-gray-400 hover:yellow-text transition"><svg class="w-8 h-8" fill="currentColor" viewBox="0 0 24 24"><path d="M22.46,6C21.69,6.35 20.86,6.58 20,6.69C20.88,6.16 21.56,5.32 21.88,4.31C21.05,4.81 20.13,5.16 19.16,5.36C18.37,4.5 17.26,4 16,4C13.65,4 11.73,5.92 11.73,8.29C11.73,8.63 11.77,8.96 11.84,9.28C8.28,9.09 5.11,7.38 2.9,4.79C2.53,5.42 2.33,6.15 2.33,6.94C2.33,8.43 3.11,9.75 4.26,10.54C3.54,10.52 2.87,10.31 2.29,10.03V10.08C2.29,12.09 3.71,13.78 5.6,14.17C5.25,14.26 4.87,14.31 4.49,14.31C4.21,14.31 3.94,14.28 3.68,14.23C4.22,15.89 5.82,17.06 7.69,17.1C6.27,18.23 4.4,18.87 2.38,18.87C2.03,18.87 1.69,18.85 1.36,18.81C3.25,20.04 5.5,20.8 8,20.8C16,20.8 20.25,14.18 20.25,8.78C20.25,8.58 20.25,8.39 20.24,8.19C21.1,7.57 21.86,6.84 22.46,6Z"></path></svg></a>
-                        <a href="#" class="text-gray-400 hover:yellow-text transition"><svg class="w-8 h-8" fill="currentColor" viewBox="0 0 24 24"><path d="M7.8,2H16.2C19.4,2 22,4.6 22,7.8V16.2A5.8,5.8 0 0,1 16.2,22H7.8C4.6,22 2,19.4 2,16.2V7.8A5.8,5.8 0 0,1 7.8,2M7.6,4A3.6,3.6 0 0,0 4,7.6V16.4C4,18.39 5.61,20 7.6,20H16.4A3.6,3.6 0 0,0 20,16.4V7.6C20,5.61 18.39,4 16.4,4H7.6M17.25,5.5A1.25,1.25 0 0,1 18.5,6.75A1.25,1.25 0 0,1 17.25,8A1.25,1.25 0 0,1 16,6.75A1.25,1.25 0 0,1 17.25,5.5M12,7A5,5 0 0,1 17,12A5,5 0 0,1 12,17A5,5 0 0,1 7,12A5,5 0 0,1 12,7M12,9A3,3 0 0,0 9,12A3,3 0 0,0 12,15A3,3 0 0,0 15,12A3,3 0 0,0 12,9Z"></path></svg></a>
+                        <a href="https://facebook.com/events/s/players-ball/826106996612735/" target="_blank" class="text-gray-400 hover:yellow-text transition"><svg class="w-8 h-8" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2.04C6.5 2.04 2 6.53 2 12.06C2 17.06 5.66 21.21 10.44 21.96V14.96H7.9V12.06H10.44V9.85C10.44 7.32 11.93 5.96 14.22 5.96C15.31 5.96 16.45 6.15 16.45 6.15V8.62H15.19C13.95 8.62 13.56 9.39 13.56 10.18V12.06H16.34L15.89 14.96H13.56V21.96C18.34 21.21 22 17.06 22 12.06C22 6.53 17.5 2.04 12 2.04Z"/></svg></a>
                      </div>
                 </div>
             </aside>
@@ -351,52 +307,25 @@
     </div>
 
     <!-- Modals -->
-    <div id="rsvp-modal" class="modal-overlay">
-        <div class="modal-content funky-panel rounded-lg shadow-xl p-8 w-full max-w-md m-4">
-            <h2 class="font-righteous text-3xl yellow-text mb-4">Get on the List</h2>
-            <p class="text-gray-200 mb-6">Enter your name & email to confirm your attendance.</p>
-            <form id="rsvp-form">
-                <input type="text" id="alias-input" placeholder="Your Name..." class="w-full bg-orange-900/20 border-2 border-orange-500/50 rounded-full px-4 py-2 text-white placeholder-gray-400 focus:ring-2 focus:ring-yellow-400 focus:outline-none mb-4">
-                <input type="email" id="email-input" placeholder="Your Email..." class="w-full bg-orange-900/20 border-2 border-orange-500/50 rounded-full px-4 py-2 text-white placeholder-gray-400 focus:ring-2 focus:ring-yellow-400 focus:outline-none">
-                <div class="mt-6 flex justify-end gap-4">
-                    <button type="button" class="close-modal-button text-gray-300 hover:text-white font-bold">Cancel</button>
-                    <button type="submit" class="btn-primary">Confirm</button>
+    <div id="style-guide-modal" class="modal-overlay">
+        <div class="modal-content funky-panel rounded-lg shadow-xl p-8 w-full max-w-2xl m-4">
+            <h2 class="font-righteous text-4xl yellow-text mb-6 text-center">What's the Dress Code?</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 text-center">
+                <div>
+                    <img src="https://placehold.co/400x500/291d19/facc15?text=Fly+Threads" class="rounded-lg border-2 border-orange-500/50 mb-2">
+                    <h3 class="font-righteous text-2xl orange-text">For the Fellas</h3>
+                    <p class="text-cream text-sm">Think bell bottoms, wide-collared shirts, velvet suits, and platform shoes. Don't be afraid of bold patterns and bright colors. Accessorize with gold chains and wide-brimmed hats.</p>
                 </div>
-            </form>
-            <div id="rsvp-success" class="hidden text-center">
-                <h3 class="font-righteous text-3xl text-green-400">You're In!</h3>
-                <p class="text-gray-200 mt-2">Your spot is saved. A confirmation email has been sent (simulation).</p>
-                <button type="button" class="close-modal-button mt-6 btn-primary">Right On</button>
-            </div>
-        </div>
-    </div>
-    <div id="song-request-modal" class="modal-overlay">
-        <div class="modal-content funky-panel rounded-lg shadow-xl p-8 w-full max-w-md m-4">
-            <h2 class="font-righteous text-3xl yellow-text mb-4 flex items-center gap-3">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" viewBox="0 0 20 20" fill="currentColor"><path d="M18 3a1 1 0 00-1.196-.98l-10 2A1 1 0 006 5v9.114A4.369 4.369 0 005 14c-1.657 0-3 1.343-3 3s1.343 3 3 3 3-1.343 3-3V7.82l8-1.6v5.894A4.37 4.37 0 0015 12c-1.657 0-3 1.343-3 3s1.343 3 3 3 3-1.343 3-3V4a1 1 0 00-1-1z" /></svg>
-                Hit the Request Line
-            </h2>
-            <p class="text-gray-200 mb-6">Got a song you wanna hear? Let the DJ know!</p>
-            <form id="song-request-form">
-                <input type="text" id="song-input" placeholder="Song Title..." class="w-full bg-orange-900/20 border-2 border-orange-500/50 rounded-full px-4 py-2 text-white placeholder-gray-400 focus:ring-2 focus:ring-yellow-400 focus:outline-none">
-                 <input type="text" id="artist-input" placeholder="Artist..." class="w-full bg-orange-900/20 border-2 border-orange-500/50 rounded-full px-4 py-2 text-white placeholder-gray-400 focus:ring-2 focus:ring-yellow-400 focus:outline-none mt-4">
-                <div class="mt-6 flex justify-end gap-4">
-                    <button type="button" class="close-modal-button text-gray-300 hover:text-white font-bold">Cancel</button>
-                    <button type="submit" class="btn-primary">Send Request</button>
+                <div>
+                    <img src="https://placehold.co/400x500/291d19/facc15?text=Foxy+Looks" class="rounded-lg border-2 border-orange-500/50 mb-2">
+                    <h3 class="font-righteous text-2xl orange-text">For the Ladies</h3>
+                    <p class="text-cream text-sm">Flowing maxi dresses, sequined jumpsuits, and high-waisted flare pants are where it's at. Go for bold prints, fringe, and afros. Platform heels are a must to complete the look.</p>
                 </div>
-            </form>
-            <div id="song-request-success" class="hidden text-center">
-                <h3 id="song-request-feedback" class="font-righteous text-3xl text-green-400">Request Sent!</h3>
-                <p class="text-gray-200 mt-2">The DJ has your request. Check the shout-outs!</p>
-                <button type="button" class="close-modal-button mt-6 btn-primary">Dynamite!</button>
             </div>
-        </div>
-    </div>
-    <div id="prize-modal" class="modal-overlay">
-         <div class="modal-content funky-panel rounded-lg shadow-xl p-8 w-full max-w-md m-4 text-center">
-            <h2 class="font-righteous text-3xl yellow-text mb-4">Best Dressed</h2>
-            <p class="text-gray-200 text-lg">Break out your finest threads! A grand prize and eternal bragging rights await the most stylish player of the evening.</p>
-            <button class="close-modal-button mt-6 btn-primary">Far Out</button>
+            <p class="text-center mt-6 text-yellow-100/80 italic">The winner of Best Dressed gets a grand prize and eternal bragging rights!</p>
+            <div class="text-center mt-6">
+                <button class="close-modal-button btn-primary">Got It!</button>
+            </div>
         </div>
     </div>
     <div id="games-modal" class="modal-overlay">
@@ -413,49 +342,16 @@
             <button class="close-modal-button mt-6 btn-primary">Outta Sight</button>
         </div>
     </div>
-    <div id="music-modal" class="modal-overlay">
-        <div class="modal-content funky-panel rounded-lg shadow-xl p-4 w-full max-w-lg m-4">
-            <div class="video-container">
-                <div id="youtube-player"></div>
-            </div>
-             <button class="close-modal-button mt-4 btn-primary w-full">Close Player</button>
-        </div>
-    </div>
-
 
     <!-- Footer -->
     <footer class="header-bg mt-12">
-        <div class="container mx-auto px-6 py-4 text-center text-yellow-200/50 text-sm flex justify-between items-center">
-            <p>&copy; 2025 The Dungeon Presents. All Rights Reserved. Powered by PressCreates</p>
-            <div id="music-player" class="flex items-center gap-3">
-                <span class="font-righteous text-lg">Player's Playlist:</span>
-                <button id="playlist-button" class="bg-orange-500 rounded-full h-10 w-10 flex items-center justify-center border-2 border-black shadow-md">
-                     <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" viewBox="0 0 20 20" fill="currentColor"><path d="M18 3a1 1 0 00-1.196-.98l-10 2A1 1 0 006 5v9.114A4.369 4.369 0 005 14c-1.657 0-3 1.343-3 3s1.343 3 3 3 3-1.343 3-3V7.82l8-1.6v5.894A4.37 4.37 0 0015 12c-1.657 0-3 1.343-3 3s1.343 3 3 3 3-1.343 3-3V4a1 1 0 00-1-1z" /></svg>
-                </button>
-            </div>
+        <div class="container mx-auto px-6 py-4 text-center text-yellow-200/50 text-sm flex justify-center items-center">
+            <p>&copy; 2025 The Dungeon Presents. All Rights Reserved.</p>
         </div>
     </footer>
-    <script src="https://www.youtube.com/iframe_api"></script>
+    
     <script>
         document.addEventListener('DOMContentLoaded', () => {
-            // --- YouTube Player Logic ---
-            let player;
-            let playerReady = false;
-            window.onYouTubeIframeAPIReady = function() {
-                player = new YT.Player('youtube-player', {
-                    height: '100%',
-                    width: '100%',
-                    playerVars: {
-                        'playsinline': 1,
-                        'listType': 'playlist',
-                        'list': 'PL8F6A37F55855057A' // A "Best of Soul Train" playlist
-                    },
-                    events: {
-                        'onReady': () => { playerReady = true; }
-                    }
-                });
-            };
-            
             // --- Geolocation for Ride Sharing ---
             navigator.geolocation.getCurrentPosition(position => {
                 const { latitude, longitude } = position.coords;
@@ -589,138 +485,20 @@
             document.querySelectorAll('.fade-in-section').forEach(section => observer.observe(section));
 
             // Modal Logic
-            const rsvpButton = document.getElementById('rsvp-button');
-            const rsvpModal = document.getElementById('rsvp-modal');
-            const rsvpForm = document.getElementById('rsvp-form');
-            const rsvpSuccess = document.getElementById('rsvp-success');
-            const guestCountEl = document.getElementById('guest-count');
-            const marqueeContent = document.getElementById('marquee-content');
-            let guestCount = 137;
-
-            const songRequestButton = document.getElementById('song-request-button');
-            const songRequestModal = document.getElementById('song-request-modal');
-            const songRequestForm = document.getElementById('song-request-form');
-            const songRequestSuccess = document.getElementById('song-request-success');
-            const songRequestFeedback = document.getElementById('song-request-feedback');
-            
-            const playlistButton = document.getElementById('playlist-button');
-            const musicModal = document.getElementById('music-modal');
-
-            const openModal = (modal) => {
-                modal.classList.add('active');
-                if (modal.id === 'music-modal' && playerReady && typeof player.playVideo === 'function') {
-                    player.playVideo();
-                }
-            };
-            const closeModal = (modal) => {
-                if (modal.id === 'music-modal' && playerReady && typeof player.pauseVideo === 'function') {
-                    player.pauseVideo();
-                }
-                modal.classList.remove('active');
-            };
-
-            if(rsvpButton) rsvpButton.addEventListener('click', () => openModal(rsvpModal));
-            if(songRequestButton) songRequestButton.addEventListener('click', () => openModal(songRequestModal));
-            if(playlistButton) playlistButton.addEventListener('click', () => openModal(musicModal));
-            
-            if(rsvpForm) rsvpForm.addEventListener('submit', (e) => {
-                e.preventDefault();
-                const aliasInput = document.getElementById('alias-input');
-                const emailInput = document.getElementById('email-input');
-                const newAlias = aliasInput.value;
-
-                if (newAlias.trim() !== '') {
-                    const newShoutout = document.createElement('span');
-                    newShoutout.textContent = `Shout out to ${newAlias}!`;
-                    marqueeContent.appendChild(newShoutout);
-                }
-                
-                // Simulate sending email
-                console.log(`// SIMULATING EMAIL: Sending confirmation to ${emailInput.value}`);
-
-                rsvpForm.classList.add('hidden');
-                rsvpSuccess.classList.remove('hidden');
-                guestCount++;
-                guestCountEl.textContent = guestCount;
-            });
-
-            // --- Enhanced Song Request Logic ---
-            const songRequests = {};
-            const topRequestsList = document.getElementById('top-requests-list');
-
-            function updateTopRequests() {
-                const sortedRequests = Object.entries(songRequests).sort(([,a],[,b]) => b-a);
-                topRequestsList.innerHTML = '';
-                for(let i=0; i< Math.min(sortedRequests.length, 3); i++) {
-                    const [song, count] = sortedRequests[i];
-                    const li = document.createElement('li');
-                    li.innerHTML = `<span class="font-bold">${i+1}.</span> ${song} <span class="text-xs text-yellow-400/50">(${count} requests)</span>`;
-                    topRequestsList.appendChild(li);
-                }
-                 if(sortedRequests.length === 0) {
-                     const li = document.createElement('li');
-                     li.innerHTML = `<span class="italic">Waiting for requests...</span>`;
-                     topRequestsList.appendChild(li);
-                 }
-            }
-            updateTopRequests(); // initial call
-
-            if(songRequestForm) songRequestForm.addEventListener('submit', (e) => {
-                e.preventDefault();
-                const songInput = document.getElementById('song-input');
-                const artistInput = document.getElementById('artist-input');
-                const newSong = songInput.value.trim();
-                const newArtist = artistInput.value.trim();
-                const feedbackText = document.getElementById('song-request-feedback');
-
-                if (newSong !== '' && newArtist !== '') {
-                    const fullRequest = `"${newSong}" by ${newArtist}`;
-                    songRequests[fullRequest] = (songRequests[fullRequest] || 0) + 1;
-                    updateTopRequests();
-                    
-                    const newShoutout = document.createElement('span');
-                    newShoutout.textContent = `DJ, play ${fullRequest}!`;
-                    marqueeContent.appendChild(newShoutout);
-
-                    feedbackText.innerHTML = "Request Sent!";
-                } else {
-                     feedbackText.innerHTML = "Gotta fill it all out!";
-                }
-
-                songRequestForm.classList.add('hidden');
-                songRequestSuccess.classList.remove('hidden');
-            });
-            
-            document.querySelectorAll('.close-modal-button').forEach(btn => {
-                btn.addEventListener('click', () => {
-                    const modal = btn.closest('.modal-overlay');
-                    closeModal(modal);
-                    setTimeout(() => {
-                        if(modal.id === 'rsvp-modal') {
-                           if(rsvpForm) rsvpForm.classList.remove('hidden');
-                           if(rsvpSuccess) rsvpSuccess.classList.add('hidden');
-                           const aliasInput = document.getElementById('alias-input');
-                           if(aliasInput) aliasInput.value = '';
-                           const emailInput = document.getElementById('email-input');
-                           if(emailInput) emailInput.value = '';
-                        }
-                        if(modal.id === 'song-request-modal') {
-                            if(songRequestForm) songRequestForm.classList.remove('hidden');
-                            if(songRequestSuccess) songRequestSuccess.classList.add('hidden');
-                            const songInput = document.getElementById('song-input');
-                            const artistInput = document.getElementById('artist-input');
-                            if(songInput) songInput.value = '';
-                            if(artistInput) artistInput.value = '';
-                        }
-                    }, 300);
-                });
-            });
+            const openModal = (modal) => modal.classList.add('active');
+            const closeModal = (modal) => modal.classList.remove('active');
 
             document.querySelectorAll('.intel-button').forEach(btn => {
                 btn.addEventListener('click', () => {
                     const modalId = btn.dataset.modal;
                     const modal = document.getElementById(modalId);
                     if(modal) openModal(modal);
+                });
+            });
+
+            document.querySelectorAll('.close-modal-button').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    closeModal(btn.closest('.modal-overlay'));
                 });
             });
 
